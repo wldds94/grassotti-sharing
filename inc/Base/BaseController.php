@@ -14,6 +14,8 @@ class BaseController
 	public $version;
     public $version_option_name;
 
+	public $site_url;
+
 	public $plugin_path;
 
 	public $plugin_url;
@@ -27,18 +29,28 @@ class BaseController
      */
     public $upload_folder_path;
 
+	/**
+	 * Admin Pages
+	 */
+	public $admin_slug_index;
+
 	public function __construct() {
 
 		$this->version = GRAXSH_VERSION;
         $this->version_option_name = 'graxsh_version';
+
+		$this->site_url = site_url();
         
 		$this->plugin_path = plugin_dir_path( dirname( __FILE__, 2 ) );
 		$this->plugin_url = plugin_dir_url( dirname( __FILE__, 2 ) );
 		$this->plugin = plugin_basename( dirname( __FILE__, 3 ) ) . '/wlsfcpt.php';
 
-		$this->valid_pages = array();
-
         $this->upload_folder_path = wp_upload_dir()['basedir'] . "/graxsh/files";
+
+		// Pages
+		$this->admin_slug_index = 'graxsh_admin_index_page';
+		$this->valid_pages = array( $this->admin_slug_index );
+
     }
 
 	/**

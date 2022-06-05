@@ -32,6 +32,8 @@ class Pages extends BaseController
 	 */
 	public function __construct()
 	{
+		parent::__construct();
+		
 		$this->settings = new Settings();
 
 		$this->pagesCallback = new AdminPagesCallback();
@@ -67,7 +69,7 @@ class Pages extends BaseController
 				'page_title' => 'Graxsh Plugin Admin Page',
 				'menu_title' => 'Graxsh Dash',
 				'capability' => 'manage_options', // 'manage_fism_office',
-				'menu_slug' => 'graxsh_admin_index_page',
+				'menu_slug' => $this->admin_slug_index,
 				'callback' => array( $this->pagesCallback, 'admin_index' ),
 				'icon_url' => 'dashicons-store',
 				'position' => 69,

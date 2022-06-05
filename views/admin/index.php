@@ -1,1 +1,1 @@
-<h5>Dashboard</h5>
+<div id="graxsh-admin-root"></div>
