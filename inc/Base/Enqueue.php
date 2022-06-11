@@ -14,7 +14,7 @@ class Enqueue extends BaseController
 	{
 		parent::__construct();
 	}
-	
+
 	/**
 	 * Register the Wordpress core Hooks 
 	 * @since   1.0.0
@@ -79,7 +79,7 @@ class Enqueue extends BaseController
 					'site_url'    => $this->site_url,
 					'ajax_url'    => admin_url( 'admin-ajax.php' ),
 					'graxsh_plugin_url' => $this->plugin_url,
-					'wl_nonce'    => wp_create_nonce( 'wlank_graxsh_validate_nonce' ), // wp_nonce_field( 'ajax-wlninja-nonce', 'wlninja_validate_button' )
+					'wl_nonce'    => wp_create_nonce( $this->admin_graxsh_nonce ), // wp_nonce_field( 'ajax-wlninja-nonce', 'wlninja_validate_button' )
 					'page_basename' => admin_url( 'admin.php?page=graxsh_admin_index_page' ),
 				) 
 			);

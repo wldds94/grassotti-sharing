@@ -1,0 +1,7 @@
+.admin-body {
+    display: flex;
+    height: calc(100vh - 180px);
+    // box-shadow: 0 -5px 5px -5px #333;
+    border: 1px solid rgba(224, 224, 224, .6);
+    border-top: 0;
+}

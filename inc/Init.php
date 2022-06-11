@@ -19,7 +19,9 @@ final class Init
 		return [
             Base\Enqueue::class,
 			Base\Notice::class,
+			Base\AjaxRouting::class,
             Core\Pages::class,
+			// Core\Router::class,
 		// 	Core\CustomPostType::class,
 		// 	Core\PopUp::class,
 		// 	// Base\AjaxRouting::class,

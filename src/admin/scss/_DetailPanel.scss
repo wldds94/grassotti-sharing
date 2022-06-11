@@ -1,0 +1,25 @@
+.detail {
+    &-panel {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        padding: 1.5em 2em;
+        column-gap: 20px;
+    }
+
+    &-attach {
+        // display: grid;
+        // grid-template-columns: 1fr 1fr;
+        // padding: .5em 1em;
+        // width: 100%;
+        display: flex;
+        justify-content: space-around;
+        padding: 0.5em 1em;
+        width: 100%;
+
+        &__image {
+            width: 150px;
+            height: 150px;
+            // max-width: 100%;
+        }
+    }
+}

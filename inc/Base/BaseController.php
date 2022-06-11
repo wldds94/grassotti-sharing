@@ -28,11 +28,23 @@ class BaseController
      * The folder to Upload the images by stories
      */
     public $upload_folder_path;
+	public $upload_url_path;
 
 	/**
 	 * Admin Pages
 	 */
 	public $admin_slug_index;
+
+	/**
+	 * Ajax Aux
+	 */
+	// NONCE
+	public $admin_graxsh_nonce;
+
+	/**
+	 * Custom Post Type
+	 */
+	public $cpt_slug;
 
 	public function __construct() {
 
@@ -46,11 +58,22 @@ class BaseController
 		$this->plugin = plugin_basename( dirname( __FILE__, 3 ) ) . '/wlsfcpt.php';
 
         $this->upload_folder_path = wp_upload_dir()['basedir'] . "/graxsh/files";
+		$this->upload_url_path = wp_upload_dir()['baseurl'] . "/graxsh/files";
 
 		// Pages
 		$this->admin_slug_index = 'graxsh_admin_index_page';
 		$this->valid_pages = array( $this->admin_slug_index );
 
+		// NONCE
+		$this->admin_graxsh_nonce = 'wlank_graxsh_validate_nonce';
+
+		// Story Post
+		$this->cpt_slug = 'graxsh_story';
+		$this->cpt_attachments_slug = 'graxsh_story_file';
+
+		// Post Meta
+		$this->cpt_slug_user_meta = '_graxsh_story_meta';
+		$this->cpt_attachments_meta_name = '_graxsh_attach_meta';
     }
 
 	/**

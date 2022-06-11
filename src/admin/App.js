@@ -1,23 +1,45 @@
-import React from 'react' // import React, { Component } from 'react'
-import { HashRouter, Routes, Route } from 'react-router-dom';
-import { Dashboard, Stories } from './pages'
+import React, { Component } from 'react'
+import { Navbar, Header } from './components';
+import { Dashboard, Stories, Add } from './pages'
 
-const App = () => {
-    return (
-        <div>
-            <HashRouter>
-                <Routes>
-                    {/* <Route exact path="/login" name="Login Page" element={<Login />} />
-                    <Route exact path="/register" name="Register Page" element={<Register />} />
-                    <Route exact path="/404" name="Page 404" element={<Page404 />} />
-                    <Route exact path="/500" name="Page 500" element={<Page500 />} /> */}
-                    <Route exact path="*#dash" name="Home" element={<Dashboard />} />
-                    <Route exact path="*#list" name="List" element={<Stories />} />
-                    <Route path="*" name="Home" element={<Dashboard />} />
-                </Routes>
-            </HashRouter>
-        </div>
-    )
+export class App extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            panel: 'dash',
+            nav: 'open',
+        }
+    }
+
+    changeNav = (mode) => {
+        this.setState({
+            nav: mode ? 'open' : 'close'
+        })
+    }
+
+    changePanel = (page) => {
+        this.setState({
+            panel: page
+        })
+    }
+
+    render() {
+        return (
+            <div>
+                <Header onChangeNav={this.changeNav} />
+                <div className='admin-body'>
+                    <Navbar mode={this.state.nav} onChangePage={this.changePanel.bind(this)} />
+                    {this.state.panel === 'dash' &&
+                        <Dashboard />}
+                    {this.state.panel === 'list' &&
+                        <Stories /> }
+                    {this.state.panel === 'add' &&
+                        <Add /> }
+                </div>
+            </div>
+        )
+    }
 }
 
 export default App

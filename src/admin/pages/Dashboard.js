@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import { Form } from '../components'
+// import Employes from './Employes'
 
 export class Dashboard extends Component {
     render() {
         return (
-            <div>
+            <div className='admin-section'>
                 <h5>Dashboard</h5>
-                <Form />
+                {/* <Employes /> */}
             </div>
         )
     }

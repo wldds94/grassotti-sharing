@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import axios from 'axios';
+import Uploader from './Uploader/Uploader';
 
 export class Form extends Component {
     constructor(props) {
@@ -9,11 +11,12 @@ export class Form extends Component {
             title: '',
             message: '',
             files: [],
-            status: ''
+            status: '',
         };
 
         this.handleChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleFiles = this.handleFiles.bind(this)
     }
 
     handleInputChange(event) {
@@ -27,24 +30,64 @@ export class Form extends Component {
         console.log('Change detected. State updated' + name + ' = ' + value);
     }
 
-    handleFiles(event) {
-        const target = event.target
-        const files = Array.from(target.files)
+    handleFiles(files) {
+        /* const target = event.target
+        // const { files } = event.target // const files = target.files // Array.from(target[0].files) */
 
-        this.setState({
-            files: files
-        });
+        // console.log(files);
+        this.setState({ files: files })
     }
 
-    handleSubmit(event) {
-        alert('A form was submitted: ' + this.state.name + ' // ' + this.state.email);
+    async handleSubmit(event) {
+        // alert('A form was submitted: ' + this.state.name + ' // ' + this.state.email);
         event.preventDefault();
+        // console.log(this.state);
+
+        const formData = new FormData();
+        formData.append("name", this.state.name);
+        formData.append("email", this.state.email);
+        formData.append("title", this.state.title);
+        formData.append("message", this.state.message);
+        Array.from(this.state.files).map((value, index) => {
+            formData.append("files[" + index + "]", value);
+        })
+        formData.append("status", this.state.status);
+
+        formData.append("action", 'graxsh_route');
+        formData.append("wlank_graxsh_nonce", wlninja_graxsh_admin_vars.wl_nonce);
+        formData.append("route", 'api/v1/post/save');
+
+        try {
+            const req = await axios({
+                method: 'POST',
+                url: wlninja_graxsh_admin_vars.ajax_url, // url: `${wlninja_graxsh_admin_vars.site_url}/?rest_route=/graxsh/v1/post/save`,
+                data: formData,
+                headers: { "Content-Type": "multipart/form-data" }, // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            }).then(res => {
+                const response = res.data;
+                console.log(response);
+                this.setState({
+                    name: '',
+                    email: '',
+                    title: '',
+                    message: '',
+                    files: [],
+                });
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     render() {
+        const entry = {}
+        this.state.files.map((item, key) => {
+            entry[item.name] = item // console.log(item.name);
+        })
+
         return (
             <div>
-                <form onSubmit={this.handleSubmit} >
+                <form onSubmit={this.handleSubmit} enctype="multipart/form-data" >
                     <div className="form-group">
                         <label htmlFor="nameImput">Name</label>
                         <input type="text" name="name" value={this.state.name} onChange={this.handleChange} className="form-control" id="nameImput" placeholder="Name" />
@@ -63,18 +106,29 @@ export class Form extends Component {
                     </div>
                     <div className="form-group">
                         <label htmlFor="filesImput">Uploads</label>
-                        <input type="file" className='form-control' id="filesImput" name='files' multiple value={this.state.files} onChange={this.handleChange} />
+                        {/* <input type="file" className='form-control' id="filesImput" name='files' multiple ref={this.state.files} onChange={this.handleFiles} /> */}
+                        <div className='uploader-container'>
+                            <Uploader
+                                accept=".jpg,.png,.jpeg,.svg"
+                                initFiles={entry}
+                                // initFiles={{ ...this.state.files }} // initFiles={this.state.files.reduceRight((all, item) => ({[item]: all}), {})}
+                                multiple
+                                onLoading={this.handleFiles.bind(this)}
+                            />
+                        </div>
                     </div>
                     <div className="form-group">
                         <label htmlFor="statusImput" className='mr-10'>Status:</label>
-                        <span>
-                            <label htmlFor="statusImput0">Bozza</label>
-                            <input type="radio" name="status" value='0' onChange={this.handleChange} className="form-control" id="statusImput0" />
-                        </span>
-                        <span>
-                            <label htmlFor="statusImput1">Publish</label>
-                            <input type="radio" name="status" value='1' onChange={this.handleChange} className="form-control" id="statusImput1" />
-                        </span>
+                        <div className="radio-container">
+                            <span>
+                                <label htmlFor="statusImput0">Bozza</label>
+                                <input type="radio" name="status" value='0' onChange={this.handleChange} className="form-control" id="statusImput0" />
+                            </span>
+                            <span>
+                                <label htmlFor="statusImput1">Publish</label>
+                                <input type="radio" name="status" value='1' onChange={this.handleChange} className="form-control" id="statusImput1" />
+                            </span>
+                        </div>
                     </div>
                     <input type="submit" value="Submit" className="btn btn-primary" />
                 </form>

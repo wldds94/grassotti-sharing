@@ -1,0 +1,61 @@
+.nav-container {
+    height: 100%;
+    background: grey;
+    color: white;
+    overflow: hidden;
+    transition: all 320ms ease-in-out;
+
+    &.close {
+        width: 0;
+    }
+
+    &.open {
+        width: 250px
+    }
+
+    #sidebar-nav {
+        ul {
+            padding: 0;
+
+            li {
+                margin-bottom: 0;
+
+                a {
+                    display: block;
+                    color: #C2C2C2;
+                    font-size: .95em;
+                    padding: 15px 20px;
+                    // float: left;
+                    width: 100%;
+                    font-weight: 600;
+                    box-sizing: border-box;
+                    text-decoration: none;
+
+                    svg {
+                        margin: 0 .5rem;
+                        font-size: 1.3em;
+                        color: #60636B;
+                    }
+
+                    span {
+                        padding-left: 8px;
+                    }
+                }
+
+                &.active {
+                    a {
+                        background: #fff;
+                        color: #333;
+                    }
+                }
+
+                &:hover {
+                    a {
+                        background: #fff;
+                        color: #333;
+                    }
+                }
+            }
+        }
+    }
+}
