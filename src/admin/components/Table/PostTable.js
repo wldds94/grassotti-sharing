@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { IoMdOpen } from 'react-icons/io';
-import { AiOutlineEdit } from 'react-icons/ai';
+import { AiOutlineEdit, AiFillFileAdd } from 'react-icons/ai';
 import { RiDeleteBin5Fill } from 'react-icons/ri';
 import { BsFillShieldLockFill } from 'react-icons/bs';
 import { BiWorld } from 'react-icons/bi';
 
 import MaterialTable from "@material-table/core";
 import { DetailPanel } from '../../components';
+
+// Style
+import './PostTable.scss'
 
 const api = axios.create({
     baseURL: wlninja_graxsh_admin_vars.ajax_url
@@ -19,7 +22,8 @@ function validateEmail(email) {
 }
 
 const PostTable = (props) => {
-    // const { onOpenModal } = props
+    const { onOpenModal } = props
+    // const tableRef = forwardRef();
 
     const columns = [
         { title: "ID", field: "ID", /* editable: false hidden: true, */ },
@@ -105,43 +109,26 @@ const PostTable = (props) => {
             })
     }
 
-    // const openModal = (e) => {
-    //     e.peventDefault()
-    //     onOpenModal()
-    // }
+    const openModal = (e) => {
+        // e.peventDefault()
+        onOpenModal()
+    }
 
     return (
         <div className='admin-section__table'>
-            {/* <div>
-                <button type="button" onClick={openModal}>
-                    Open
-                </button>
-            </div> */}
+            <div className='add-post'>
+                <AiFillFileAdd onClick={openModal} />
+            </div>
 
             <MaterialTable
+                // ref={tableRef}
                 title="Table Data"
                 columns={columns}
                 data={data}
-                editable={{
-                    //   onRowUpdate: (newData, oldData) =>
-                    //     new Promise((resolve) => {
-                    //       handleRowUpdate(newData, oldData, resolve);
-
-                    //     }),
-                    onRowAdd: (newData) =>
-                        new Promise((resolve) => {
-                            handleRowAdd(newData, resolve)
-                        }),
-                    //   onRowDelete: (oldData) =>
-                    //     new Promise((resolve) => {
-                    //       handleRowDelete(oldData, resolve)
-                    //     }),
-                }}
                 detailPanel={rowData => {
-                    // console.log(rowData);
                     return (
                         <div>
-                            <DetailPanel details={rowData} />
+                            <DetailPanel key={rowData.post_title} details={rowData} />
                         </div>
                     )
                 }}
@@ -172,10 +159,10 @@ const PostTable = (props) => {
                         fontSize: '12px',
                         fontWeight: 'bold',
                     },
-                    // rowStyle: (rowData) => ({
-                    //     backgroundColor:
-                    //         selectedRowId === rowData.tableData.id ? "#6ABAC9" : "#FFF",
-                    // }),
+                    rowStyle: (rowData) => ({
+                        backgroundColor:
+                            selectedRowId === rowData.tableData.id ? "#6ABAC9" : "#FFF",
+                    }),
                 }}
                 onRowClick={(event, rowData) => {
                     // if the rowData.tableDate.id could be used on condidtional render

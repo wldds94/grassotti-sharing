@@ -87,7 +87,7 @@ export class Form extends Component {
 
         return (
             <div>
-                <form onSubmit={this.handleSubmit} enctype="multipart/form-data" >
+                <form onSubmit={this.handleSubmit} encType="multipart/form-data" >
                     <div className="form-group">
                         <label htmlFor="nameImput">Name</label>
                         <input type="text" name="name" value={this.state.name} onChange={this.handleChange} className="form-control" id="nameImput" placeholder="Name" />

@@ -1,0 +1,15 @@
+.admin-section__table {
+    .add-post {
+        display: flex;
+        justify-content: flex-end;
+        padding: 1rem 0.8rem;
+        cursor: pointer;
+    }
+
+    // Customize Base
+    input.MuiInputBase-input.MuiInput-input.MuiInputBase-inputAdornedStart.MuiInputBase-inputAdornedEnd {
+        border: none;
+        background: white;
+        border-bottom: 1px solid #949494;
+    }
+}

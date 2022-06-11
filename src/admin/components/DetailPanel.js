@@ -14,13 +14,13 @@ export class DetailPanel extends Component {
         const { children } = rowData
         // console.log(this.props.details, rowData, children);
         return (
-            <div className='detail-panel'>
+            <div key={rowData.ID} className='detail-panel'>
                 <div className='detail-content' dangerouslySetInnerHTML={this.renderHtml(rowData.post_content)} />
                 <div className='detail-attach' >
                     {children.map(child => {
                         // console.log('Url: ', child.meta);
                         return (
-                            <div className='detail-attach__image' style={{
+                            <div key={child.ID} className='detail-attach__image' style={{
                                 backgroundImage: `url(${child.meta})`
                             }}>
                             </div>

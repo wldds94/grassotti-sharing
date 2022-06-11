@@ -1,5 +1,5 @@
 .modal {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -8,13 +8,27 @@
 }
 
 .modal-main {
-    position: fixed;
+    position: relative;
     background: white;
-    width: 80%;
-    height: auto;
+    width: 95%;
+    height: 95%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    overflow-y: auto;
+
+    .actions-container {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        padding: 0.2rem 1rem;
+
+        .panel {
+            &-close {
+                cursor: pointer;
+            }
+        }
+    }
 }
 
 .display-block {
