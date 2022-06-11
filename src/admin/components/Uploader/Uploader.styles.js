@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const FileUploadContainer = styled.section`
   position: relative;
-  border: 2px dotted lightgray;
+  border: 1px solid #eeeeee;
   padding: 35px 20px;
   border-radius: 6px;
   display: flex;

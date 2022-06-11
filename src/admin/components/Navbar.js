@@ -26,19 +26,19 @@ export class Navbar extends Component {
             <div className={'nav-container ' + this.props.mode}>
                 <div id='sidebar-nav' /* className='admin-section' */>
                     <ul>
-                        <li className={this.state.active === 'dash' && 'active'} data-ref='#dash'>
+                        <li className={this.state.active === 'dash' ? 'active' : ''} data-ref='#dash'>
                             <a href='#' onClick={this.clickMenu.bind(this)}>
                                 <TbLayoutDashboard />
                                 <span>Dashboard</span>
                             </a>
                         </li>
-                        <li className={this.state.active === 'list' && 'active'} data-ref='#list'>
+                        <li className={this.state.active === 'list' ? 'active' : ''} data-ref='#list'>
                             <a href='#list' onClick={this.clickMenu.bind(this)}>
                                 <FaThList />
                                 <span>List</span>
                             </a>
                         </li>
-                        <li className={this.state.active === 'add' && 'active'} data-ref='#add'>
+                        <li className={this.state.active === 'add' ? 'active' : ''} data-ref='#add'>
                             <a href='#add' onClick={this.clickMenu.bind(this)}>
                                 <FaPlus />
                                 <span>Add</span>
@@ -46,7 +46,32 @@ export class Navbar extends Component {
                         </li>
                     </ul>
                 </div>
+                {/* <div className={'nav-container ' + this.props.mode ? this.props.mode : ''}>
+                            <div id='sidebar-nav'>
+                            <ul>
+                            <li className={this.state.active === 'dash' ? 'active' : ''} data-ref='#dash'>
+                                <a href='#' onClick={this.clickMenu.bind(this)}>
+                                    <TbLayoutDashboard />
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+                            <li className={this.state.active === 'list' ? 'active' : ''} data-ref='#list'>
+                                <a href='#list' onClick={this.clickMenu.bind(this)}>
+                                    <FaThList />
+                                    <span>List</span>
+                                </a>
+                            </li>
+                            <li className={this.state.active === 'add' ? 'active' : ''} data-ref='#add'>
+                                <a href='#add' onClick={this.clickMenu.bind(this)}>
+                                    <FaPlus />
+                                    <span>Add</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div> */}
             </div>
+            
         )
     }
 }

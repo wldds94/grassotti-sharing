@@ -18,7 +18,7 @@ export class DetailPanel extends Component {
                 <div className='detail-content' dangerouslySetInnerHTML={this.renderHtml(rowData.post_content)} />
                 <div className='detail-attach' >
                     {children.map(child => {
-                        console.log('Url: ', child.meta);
+                        // console.log('Url: ', child.meta);
                         return (
                             <div className='detail-attach__image' style={{
                                 backgroundImage: `url(${child.meta})`
