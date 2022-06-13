@@ -34,6 +34,10 @@ const Stories = () => {
       if (Number(temp.key) === Number(keyModal)) {
         temp.isMaximized = !isMaximized; // console.log('Change Value');
         // temp.show = false;
+        if (!isMaximized) {
+          temp.layout = { left: 0, top: 0, ...value.layout }
+          console.log('Have To Maximize: ', temp.layout);
+        }
       }
       return temp;
     })
@@ -91,6 +95,7 @@ const Stories = () => {
         show: true,
         active: true,
         isMaximized: false,
+        layout: { left: 0, top: 0, width: '70%', height: '70%' }
       }
 
       setListModals([...newModals, newModal])
@@ -151,10 +156,10 @@ const Stories = () => {
           <PostTable onOpenModal={createModal} />
         </div>
         {listModals.map((value, key) => {
-          // console.log('Value: ', value); console.log('Key: ', key);
+          console.log('Value: ', value.layout); console.log('Key: ', key);
           return (
             <Modal key={value.key} show={value.show} active={value.active} indexModal={value.key} isMaximized={value.isMaximized} handleClose={cancelModal} handleMinimize={hideModal} handleMaximize={resizeModal} 
-              title={value.title} >
+              title={value.title} layout={value.layout} >
               <div>
                 {value.components()}
               </div>

@@ -6,7 +6,7 @@ export class Add extends Component {
         return (
             <div className='admin-section inner'>
                 <h5>Add</h5>
-                <Form />
+                <Form isNew={true} />
             </div>
         )
     }

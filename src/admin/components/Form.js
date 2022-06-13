@@ -6,6 +6,8 @@ export class Form extends Component {
     constructor(props) {
         super(props);
 
+        this.isNew = props.isNew ? true : false
+
         const { post } = props
         let stateAux = post ? post : {
             id: '',
@@ -83,14 +85,16 @@ export class Form extends Component {
             }).then(res => {
                 const response = res.data;
                 console.log(response);
-                this.setState({
-                    id: '',
-                    name: '',
-                    email: '',
-                    title: '',
-                    message: '',
-                    files: [],
-                });
+                if (this.isNew) {
+                    this.setState({
+                        id: '',
+                        name: '',
+                        email: '',
+                        title: '',
+                        message: '',
+                        files: [],
+                    });
+                }                
             })
         } catch (error) {
             console.log(error)
