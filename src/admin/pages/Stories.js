@@ -3,8 +3,8 @@ import { PostTable, Modal } from '../components';
 import { BsFileEarmarkSpreadsheet } from 'react-icons/bs';
 
 const Stories = () => {
-  const [listModals, setListModals] = useState(/* [
-    {
+  const [listModals, setListModals] = useState([
+    /* {
       key: 0,
       components: () => { return (<h1>Test 1</h1>) },
       show: false,
@@ -17,8 +17,8 @@ const Stories = () => {
       show: false,
       active: false,
       isMaximized: false,
-    }
-  ] */)
+    } */
+  ])
   // const [activeModal, setActiveModal] = useState(null);
 
   // const showModal = () => {

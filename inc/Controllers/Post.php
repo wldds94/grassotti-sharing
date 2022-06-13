@@ -31,20 +31,43 @@ class Post extends BaseController {
 			exit;
 		}
 
+        $post_id = '';
+        if(isset($_POST['id'])) {
+            $post_id = sanitize_text_field( $_POST['id'] );
+		}
+
         $name = sanitize_text_field( $_POST['name'] );
         $email = sanitize_text_field( $_POST['email'] );
         $title = sanitize_text_field( $_POST['title'] );
 		$message = htmlentities( wpautop($_POST['message']) );
         $status = isset($_POST['status']) ? (absint( sanitize_text_field( $_POST['status'] ) ) === 1 ? 'publish' : 'draft') : 'draft';
 
-        $story_post = array(
-            'post_title'     => $title,
-            'post_content'   => $message,
-            'post_status'    => $status,
-            // 'guid'           => $wlpsa_dir_url . '/' . basename( $filename ),
-            'post_type'      => $this->cpt_slug,
-        );
-        $story_post_id = wp_insert_post( $story_post );
+        if ('' !== $post_id) {
+            $story_post = array(
+                'ID'           => $post_id,
+                'post_title'     => $title,
+                'post_content'   => $message,
+                'post_status'    => $status,
+                // 'guid'           => $wlpsa_dir_url . '/' . basename( $filename ),
+                'post_type'      => $this->cpt_slug,
+            );
+            $story_post_id = wp_update_post($story_post); // wp_insert_post( $story_post );
+
+            // Delete all childs post
+            $this->deleteChildsByPost($post_id);
+            $path = $this->upload_folder_path . '/' . $post_id;
+            $this->recursiveDelete($path);
+        } else {
+            $story_post = array(
+                'post_title'     => $title,
+                'post_content'   => $message,
+                'post_status'    => $status,
+                // 'guid'           => $wlpsa_dir_url . '/' . basename( $filename ),
+                'post_type'      => $this->cpt_slug,
+            );
+            $story_post_id = wp_insert_post( $story_post );
+        }
+        
         if (is_wp_error( $story_post_id)) {
             $res_array['error'] = 'error - Could not insert stories Post';
 			return json_encode($res_array);
@@ -130,6 +153,10 @@ class Post extends BaseController {
                                 $story_post_attach_meta = array();
 
                                 $story_post_attach_meta['url'] = $this->upload_url_path . '/' . $story_post_id . '/' . $story_post_attach_id . '/' . $filename;
+
+                                $blob_path = $this->upload_folder_path . '/' . $story_post_id . '/' . $story_post_attach_id . '/' . $filename;
+                                $blob = 'data:' . $story_post_attachment['post_mime_type'] . ';base64,' . base64_encode(fread(fopen($blob_path, "r"), filesize($blob_path)));
+                                $story_post_attach_meta['blob'] = $blob;
                                 $story_post_attach_meta['size'] = $file_size;
                                 $doc_file_time = filemtime(  $upload_path . $filename );
                                 $story_post_attach_meta['edited'] = date( "M j Y g:i A", $doc_file_time );
@@ -220,22 +247,23 @@ class Post extends BaseController {
 
         $postID = sanitize_text_field( $_POST['post_id'] );
 
-        $args_child = array(
-            'posts_per_page' => -1,
-            'post_parent'    => $postID,
-            'post_status'    => 'inherit',
-            'post_type'      => $this->cpt_attachments_slug,
-        );
-        $childs = get_children( $args_child );
+        // $args_child = array(
+        //     'posts_per_page' => -1,
+        //     'post_parent'    => $postID,
+        //     'post_status'    => 'inherit',
+        //     'post_type'      => $this->cpt_attachments_slug,
+        // );
+        // $childs = get_children( $args_child );
 
-        if (is_array($childs) && count($childs) > 0) {
-            // Delete all the Children of the Parent Page
-            foreach($childs as $child){
-                wp_delete_post($child->ID, true);
-            }
-        } else {
-            $res_array['warning'] = 'warning - Empty Childs';
-        }
+        // if (is_array($childs) && count($childs) > 0) {
+        //     // Delete all the Children of the Parent Page
+        //     foreach($childs as $child){
+        //         wp_delete_post($child->ID, true);
+        //     }
+        // } else {
+        //     $res_array['warning'] = 'warning - Empty Childs';
+        // }
+        $this->deleteChildsByPost($postID);
 
         $post_deleted = wp_delete_post($postID, true);
         if (!$post_deleted) {
@@ -270,6 +298,25 @@ class Post extends BaseController {
                 $this->recursiveDelete($path);
             }
             return @rmdir($str);
+        }
+    }
+
+    /** Delete all childs of post */
+    private function deleteChildsByPost($post_id)
+    {
+        $args_child = array(
+            'posts_per_page' => -1,
+            'post_parent'    => $post_id,
+            'post_status'    => 'inherit',
+            'post_type'      => $this->cpt_attachments_slug,
+        );
+        $childs = get_children( $args_child );
+
+        if (is_array($childs) && count($childs) > 0) {
+            // Delete all the Children of the Parent Page
+            foreach($childs as $child){
+                wp_delete_post($child->ID, true);
+            }
         }
     }
 
@@ -320,11 +367,15 @@ class Post extends BaseController {
  
         if ( $attachments ) {
             foreach ( $attachments as $attachment ) {
-                $blob_path = $this->upload_folder_path . '/' . $post_id . '/' . $attachment->ID . '/' . $attachment->post_title;
-                $blob = base64_encode(fread(fopen($blob_path, "r"), filesize($blob_path)));
                 $attach_meta = get_post_meta($attachment->ID, $this->cpt_attachments_meta_name, true);
                 $attachment->meta = isset($attach_meta['url']) ? $attach_meta['url'] : ''; // $attach_meta;
-                $attachment->blob = $blob; //$this->upload_folder_path . '/' . $post_id . '/' . $attachment->ID . '/' . $attachment->post_title;
+
+                $blob_path = $this->upload_folder_path . '/' . $post_id . '/' . $attachment->ID . '/' . $attachment->post_title;
+                $blob = 'data:' . $attachment->post_mime_type . ';base64,' . base64_encode(fread(fopen($blob_path, "r"), filesize($blob_path)));
+
+                $blob_path = $this->upload_folder_path . '/' . $post_id . '/' . $attachment->ID . '/' . $attachment->post_title;
+                $blob = 'data:' . $attachment->post_mime_type . ';base64,' . base64_encode(fread(fopen($blob_path, "r"), filesize($blob_path)));
+                $attachment->blob = isset($attach_meta['blob']) ? $attach_meta['blob'] : ''; // $blob; //$this->upload_folder_path . '/' . $post_id . '/' . $attachment->ID . '/' . $attachment->post_title;
                 array_push($children, $attachment);
             }
         }

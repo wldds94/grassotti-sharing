@@ -59,6 +59,7 @@ export class Form extends Component {
         // console.log(this.state);
 
         const formData = new FormData();
+        formData.append("id", this.state.id);
         formData.append("name", this.state.name);
         formData.append("email", this.state.email);
         formData.append("title", this.state.title);

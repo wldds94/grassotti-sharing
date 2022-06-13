@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Buffer } from 'buffer';
 import axios from 'axios';
 import { IoMdOpen } from 'react-icons/io';
 import { AiOutlineEdit, AiFillFileAdd } from 'react-icons/ai';
@@ -123,15 +124,25 @@ const PostTable = (props) => {
                 message: strippedMessage,
                 status: rowData.post_status,
                 files: rowData.children.map((value) => {
+                    // console.log('Value File: ', value);
+                    var arr = value.blob.split(','),
+                        mime = arr[0].match(/:(.*?);/)[1],
+                        bstr = Buffer.from(arr[1], 'base64'), // bstrAtob = atob(arr[1]), n = bstr.length, 
+                        u8arr = new Uint8Array(bstr); // new Uint8Array(n);
+                    // console.log('bstr: ', bstr); // console.log('bstrAtob: ', bstrAtob);
+
+                    const FileBlob = new File([u8arr], value.post_title, { type: mime, });
+                    return FileBlob
                     // var temp = {
                     //     [value.post_title]: new File([value.blob], value.post_title)
                     // }
                     // return temp
                     // var temp = Object.assign({}, value); // console.log(temp, temp.key);
                     // return temp;
-                    return new File([value.blob], value.post_title, { type: value.post_mime_type, })
+                    // return new File([value.blob], value.post_title, { type: value.post_mime_type, })
                 }),
             }
+            // console.log('Post Files: ', post.files);
             return (
                 <div>
                     {/* <h5>Edit Panel</h5> */}
