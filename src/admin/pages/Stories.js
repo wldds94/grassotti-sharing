@@ -1,33 +1,161 @@
 import React, { useState } from 'react'
 import { PostTable, Modal } from '../components';
+import { BsFileEarmarkSpreadsheet } from 'react-icons/bs';
 
 const Stories = () => {
-  const [show, setShow] = useState(false);
+  const [listModals, setListModals] = useState([
+    {
+      key: 0,
+      components: () => { return (<h1>Test 1</h1>) },
+      show: false,
+      active: false,
+      isMaximized: true,
+    },
+    {
+      key: 1,
+      components: () => { return (<h1>Test 2</h1>) },
+      show: true,
+      active: true,
+      isMaximized: false,
+    }
+  ])
+  // const [activeModal, setActiveModal] = useState(null);
 
-  const showModal = () => {
-    console.log('Showing Modal...');
-    setShow(true)
+  // const showModal = () => {
+  //   console.log('Showing Modal...');
+  //   setShow(true)
+  // }
+
+  const resizeModal = (keyModal, isMaximized) => {
+    console.log('Resizing Modal...');
+
+    const newModals = listModals.map((value) => {
+      var temp = Object.assign({}, value); // console.log(temp, temp.key);
+      if (Number(temp.key) === Number(keyModal)) {
+        temp.isMaximized = !isMaximized; // console.log('Change Value');
+        // temp.show = false;
+      }
+      return temp;
+    })
+    setListModals(prevState => {
+      return newModals
+    })
   }
 
-  const hideModal = () => {
+  const hideModal = (keyModal) => {
     console.log('Hiding Modal...');
-    setShow(false)
+
+    const newModals = listModals.map((value) => {
+      var temp = Object.assign({}, value); // console.log(temp, temp.key);
+      if (Number(temp.key) === Number(keyModal)) {
+        temp.active = false; // console.log('Change Value');
+        temp.show = false;
+      }
+      return temp;
+    })
+    setListModals(prevState => {
+      return newModals
+    })
+    // setShow(false)
+  }
+
+
+  const createModal = (key, content) => {
+    console.log('Creating Modal');
+    const old = listModals
+    const newModal = {
+      key: key,
+      components: content,
+      show: true,
+      active: true,
+      isMaximized: false,
+    }
+
+    // console.log(listModals); // old.push(newModal) // setListModals(old)
+    setListModals(prevState => {
+      // return old
+      return [
+        ...prevState,
+        newModal
+      ] // prevState.push(newModal)
+    })
+    // console.log(listModals);
+    // setActiveModal(key)
+  }
+
+  const cancelModal = (keyModal) => {
+    console.log('cancel Modal...');
+
+    const newModals = listModals.filter((value, index) => {
+      // console.log(value.key, keyModal);
+      return value.key !== keyModal
+    })
+    console.log(newModals);
+    setListModals(prevState => {
+      return newModals // return old // prevState.push(newModal)
+    })
+  }
+
+  const handleClickThumb = (e) => {
+    let keyModal = e.target.dataset.index // console.log('You clicked Thumb with KEY: ', keyModal);
+
+    const newModals = listModals.map((value) => {
+      var temp = Object.assign({}, value); // console.log(temp, temp.key);
+      if (Number(temp.key) === Number(keyModal)) {
+        temp.active = true; // console.log('Change Value');
+        temp.show = true;
+      } else {
+        temp.active = false // console.log('Not Change Value');
+      }
+      return temp;
+    })
+    setListModals(prevState => {
+      return newModals
+    }) // console.log(newModals);
   }
 
   return (
     <div className='admin-section'>
       <h5>Stories</h5>
       <div>
-        <PostTable onOpenModal={showModal} />
+        <PostTable onOpenModal={createModal} />
       </div>
-      <Modal show={show} handleClose={hideModal}>
-        <p>Modal</p>
-      </Modal>
+      {listModals.map((value, key) => {
+        // console.log('Value: ', value); console.log('Key: ', key);
+        return (
+          <Modal key={value.key} show={value.show} active={value.active} indexModal={value.key} isMaximized={value.isMaximized} handleClose={cancelModal} handleMinimize={hideModal} handleMaximize={resizeModal}>
+            <div>
+              {value.components()}
+            </div>
+          </Modal>
+        )
+      })}
+      <div className='thumbnail-panel-container'>
+        {listModals.map((value, key) => {
+          return (
+            <div key={value.key} className={value.active ? 'thumb active' : 'thumb'} onClick={handleClickThumb} data-index={value.key}>
+              {/* <BsFileEarmarkSpreadsheet /> <i className="fa fa-folder" data-index={value.key}></i>*/}<i className="fa-solid fa-folder-plus" data-index={value.key}></i>
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }
 
 export default Stories
+
+
+
+
+
+
+
+
+
+
+
+
 
 // import React, { Component } from 'react'
 // import { PostTable, Form } from '../components';

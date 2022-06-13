@@ -111,7 +111,14 @@ const PostTable = (props) => {
 
     const openModal = (e) => {
         // e.peventDefault()
-        onOpenModal()
+        onOpenModal(Math.floor(Math.random() * 100), () => {
+            return (
+                <div>
+                    <h5>Edit Panel</h5>
+                    {/* <Form /> */}
+                </div>
+            )
+        })
     }
 
     return (

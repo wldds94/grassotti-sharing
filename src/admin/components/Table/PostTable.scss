@@ -4,6 +4,10 @@
         justify-content: flex-end;
         padding: 1rem 0.8rem;
         cursor: pointer;
+        font-size: 1.5rem;
+        position: absolute;
+        top: 0;
+        right: 1.5rem;
     }
 
     // Customize Base
@@ -11,5 +15,73 @@
         border: none;
         background: white;
         border-bottom: 1px solid #949494;
+    }
+}
+
+.thumbnail-panel-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    // height: 2.5rem;
+    // background: #eeeeee;
+    // font-size: 1.3rem;
+    // display: flex;
+    // justify-content: center;
+    // vertical-align: middle;
+    // line-height: 2.5rem;
+    // gap: 5px;
+    // padding: 5px 5px;
+    // height: 45px;
+    // backdrop-filter: blur(15px);
+    // text-align: center;
+    // z-index: 1000;
+    height: 45px;
+    line-height: 44px;
+    backdrop-filter: blur(15px);
+    padding: 0 5px; // 0 5px; // padding: 5px;
+    text-align: center;
+    z-index: 1000;
+    color: white;
+    display: flex;
+
+    .thumb {
+        // padding: 0 .7rem;
+        // background: rgba($color: white, $alpha: .7);
+        // border-radius: 4px;
+        // box-shadow: 0px 0px 2px 2px rgba($color: #000000, $alpha: .6);
+        display: inline-block;
+        position: relative;
+        padding: 0 15px; // 0 15px;
+        vertical-align: top;
+        border-radius: 4px 4px 0 0;
+        height: 35px;
+        transition: background-color 0.2s linear;
+        cursor: pointer;
+        box-shadow: inset 0 -2px 0 rgb(255 255 255 / 35%);
+        margin-right: 4px;
+        height: 100%;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        &.active {
+            background-color: #0097A7;
+            box-shadow: inset 0 -3px 0px #0ebeff;
+        }
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+        opacity: 0.6;
+        background-color: #1c2429;
+        background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/59615/bg--acrylic-light.png);
     }
 }
