@@ -5,7 +5,10 @@ import Uploader from './Uploader/Uploader';
 export class Form extends Component {
     constructor(props) {
         super(props);
-        this.state = {
+
+        const { post } = props
+        let state = post ? post : {
+            id: '',
             name: '',
             email: '',
             title: '',
@@ -13,11 +16,26 @@ export class Form extends Component {
             files: [],
             status: '',
         };
+        this.state = state
 
         this.handleChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleFiles = this.handleFiles.bind(this)
+        this.handleFiles = this.handleFiles.bind(this);
     }
+
+    // static getDerivedStateFromProps(props, state) {
+    //     console.log(props, state);
+    //     const { post } = props
+    //     if (post && post != state) {
+    //         return post
+    //     }
+    //     // if (state.remoteValueMemo !== props.remoteValue) {
+    //     //     return {
+    //     //         remoteValueMemo: props.remoteValue,
+    //     //         internalValue: props.remoteValue};
+    //     // }
+    //     return null;
+    // }
 
     handleInputChange(event) {
         const target = event.target;
@@ -31,10 +49,7 @@ export class Form extends Component {
     }
 
     handleFiles(files) {
-        /* const target = event.target
-        // const { files } = event.target // const files = target.files // Array.from(target[0].files) */
-
-        // console.log(files);
+        /* const target = event.target // const { files } = event.target // const files = target.files // Array.from(target[0].files) */ // console.log(files);
         this.setState({ files: files })
     }
 
@@ -67,6 +82,7 @@ export class Form extends Component {
                 const response = res.data;
                 console.log(response);
                 this.setState({
+                    id: '',
                     name: '',
                     email: '',
                     title: '',
@@ -88,6 +104,7 @@ export class Form extends Component {
         return (
             <div>
                 <form onSubmit={this.handleSubmit} encType="multipart/form-data" >
+                    <input type="hidden" name="id" value={this.state.name} onChange={this.handleChange} className="form-control" id="idImput" placeholder="Name" />
                     <div className="form-group">
                         <label htmlFor="nameImput">Name</label>
                         <input type="text" name="name" value={this.state.name} onChange={this.handleChange} className="form-control" id="nameImput" placeholder="Name" />

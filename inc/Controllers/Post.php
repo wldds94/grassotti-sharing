@@ -320,8 +320,11 @@ class Post extends BaseController {
  
         if ( $attachments ) {
             foreach ( $attachments as $attachment ) {
+                $blob_path = $this->upload_folder_path . '/' . $post_id . '/' . $attachment->ID . '/' . $attachment->post_title;
+                $blob = base64_encode(fread(fopen($blob_path, "r"), filesize($blob_path)));
                 $attach_meta = get_post_meta($attachment->ID, $this->cpt_attachments_meta_name, true);
-                $attachment->meta = isset($attach_meta['url']) ? $attach_meta['url'] : ''; // $attach_meta;  
+                $attachment->meta = isset($attach_meta['url']) ? $attach_meta['url'] : ''; // $attach_meta;
+                $attachment->blob = $blob; //$this->upload_folder_path . '/' . $post_id . '/' . $attachment->ID . '/' . $attachment->post_title;
                 array_push($children, $attachment);
             }
         }

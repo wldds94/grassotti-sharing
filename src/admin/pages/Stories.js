@@ -3,7 +3,7 @@ import { PostTable, Modal } from '../components';
 import { BsFileEarmarkSpreadsheet } from 'react-icons/bs';
 
 const Stories = () => {
-  const [listModals, setListModals] = useState([
+  const [listModals, setListModals] = useState(/* [
     {
       key: 0,
       components: () => { return (<h1>Test 1</h1>) },
@@ -14,11 +14,11 @@ const Stories = () => {
     {
       key: 1,
       components: () => { return (<h1>Test 2</h1>) },
-      show: true,
-      active: true,
+      show: false,
+      active: false,
       isMaximized: false,
     }
-  ])
+  ] */)
   // const [activeModal, setActiveModal] = useState(null);
 
   // const showModal = () => {
@@ -60,27 +60,56 @@ const Stories = () => {
   }
 
 
-  const createModal = (key, content) => {
-    console.log('Creating Modal');
+  const createModal = (keyModal, content, title = 'New Panel') => {
+    console.info('Creating Modal');
     const old = listModals
-    const newModal = {
-      key: key,
-      components: content,
-      show: true,
-      active: true,
-      isMaximized: false,
-    }
+    const isOpened = old.filter((value) => {
+      var temp = Object.assign({}, value); console.log(keyModal, temp.key);
+      if (Number(temp.key) === Number(keyModal)) {
+        return true; // console.log('Change Value');
+      }
+      // return false;
+    })    
+    // console.log('isOpened: ', isOpened, 'OLD: ', old);
 
-    // console.log(listModals); // old.push(newModal) // setListModals(old)
-    setListModals(prevState => {
-      // return old
-      return [
-        ...prevState,
-        newModal
-      ] // prevState.push(newModal)
+    // let newModals = null
+    let newModals = listModals.map((value) => {
+      var temp = Object.assign({}, value); // console.log(temp, temp.key);
+      if (Number(temp.key) === Number(keyModal)) {
+        temp.active = true; // console.log('Change Value');
+        temp.show = true;
+      } else {
+        temp.active = false // console.log('Not Change Value');
+      }
+      return temp;
     })
-    // console.log(listModals);
-    // setActiveModal(key)
+    if (!isOpened.length > 0) {
+      const newModal = {
+        key: keyModal,
+        title: title,
+        components: content,
+        show: true,
+        active: true,
+        isMaximized: false,
+      }
+
+      setListModals([...newModals, newModal])
+    } else {
+      setListModals(newModals)
+    }
+    // setListModals(prevState => {
+    //   return newModals
+    // })
+    // console.log('New Modal: ', newModal);
+
+    // // console.log(listModals); // old.push(newModal) // setListModals(old)
+    // setListModals(prevState => {
+    //   // return old
+    //   return [
+    //     ...prevState,
+    //     newModal
+    //   ] // prevState.push(newModal)
+    // })
   }
 
   const cancelModal = (keyModal) => {
@@ -123,7 +152,8 @@ const Stories = () => {
       {listModals.map((value, key) => {
         // console.log('Value: ', value); console.log('Key: ', key);
         return (
-          <Modal key={value.key} show={value.show} active={value.active} indexModal={value.key} isMaximized={value.isMaximized} handleClose={cancelModal} handleMinimize={hideModal} handleMaximize={resizeModal}>
+          <Modal key={value.key} show={value.show} active={value.active} indexModal={value.key} isMaximized={value.isMaximized} handleClose={cancelModal} handleMinimize={hideModal} handleMaximize={resizeModal} 
+            title={value.title} >
             <div>
               {value.components()}
             </div>

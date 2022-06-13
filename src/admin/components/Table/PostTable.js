@@ -7,7 +7,7 @@ import { BsFillShieldLockFill } from 'react-icons/bs';
 import { BiWorld } from 'react-icons/bi';
 
 import MaterialTable from "@material-table/core";
-import { DetailPanel } from '../../components';
+import { DetailPanel, Form } from '../../components';
 
 // Style
 import './PostTable.scss'
@@ -109,13 +109,45 @@ const PostTable = (props) => {
             })
     }
 
-    const openModal = (e) => {
+    const handleRowEdit = (rowData) => {
         // e.peventDefault()
-        onOpenModal(Math.floor(Math.random() * 100), () => {
+        console.log('RowData: ', rowData);
+        const strippedMessage = rowData.post_content.replace(/(<([^>]+)>)/gi, "");
+
+        onOpenModal(rowData.ID, () => {
+            const post = {
+                id: rowData.ID,
+                name: rowData.name,
+                email: rowData.email,
+                title: rowData.post_title,
+                message: strippedMessage,
+                status: rowData.post_status,
+                files: rowData.children.map((value) => {
+                    // var temp = {
+                    //     [value.post_title]: new File([value.blob], value.post_title)
+                    // }
+                    // return temp
+                    // var temp = Object.assign({}, value); // console.log(temp, temp.key);
+                    // return temp;
+                    return new File([value.blob], value.post_title, { type: value.post_mime_type, })
+                }),
+            }
             return (
                 <div>
-                    <h5>Edit Panel</h5>
-                    {/* <Form /> */}
+                    {/* <h5>Edit Panel</h5> */}
+                    <Form post={post} />
+                </div>
+            )
+        }, rowData.title)
+    }
+
+    const openModal = (e) => {
+        // e.peventDefault()
+        onOpenModal((new Date().valueOf()), () => {
+            return (
+                <div>
+                    {/* <h5>Edit Panel</h5> */}
+                    <Form />
                 </div>
             )
         })
@@ -144,7 +176,7 @@ const PostTable = (props) => {
                         icon: () => <AiOutlineEdit />,
                         tooltip: 'Edit Index',
                         onClick: (event, rowData) => {
-                            setData([])
+                            handleRowEdit(rowData)
                         }
                     },
                     {
