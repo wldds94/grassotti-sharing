@@ -39,7 +39,7 @@ const Uploader = ({
     const [files, setFiles] = useState({});
 
     useEffect(() => {
-        // console.log('Files: ', files);
+        console.log('initFiles: ', files);
         // console.log('initFiles: ', initFiles);
         // const newFiles = addNewFiles(initFiles)
         // setFiles(newFiles);

@@ -7,7 +7,7 @@ export class Form extends Component {
         super(props);
 
         const { post } = props
-        let state = post ? post : {
+        let stateAux = post ? post : {
             id: '',
             name: '',
             email: '',
@@ -16,7 +16,8 @@ export class Form extends Component {
             files: [],
             status: '',
         };
-        this.state = state
+        this.state = stateAux
+        console.log('Form state Files: ', this.state.files);
 
         this.handleChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -98,8 +99,10 @@ export class Form extends Component {
 
     render() {
         const entry = {}
+        let counter = 1;
         this.state.files.map((item, key) => {
-            entry[item.name] = item // console.log(item.name);
+            entry[counter + '-' + item.name] = item // console.log(item.name);
+            counter++
         })
 
         return (

@@ -144,22 +144,25 @@ const Stories = () => {
   }
 
   return (
-    <div className='admin-section'>
-      <h5>Stories</h5>
-      <div>
-        <PostTable onOpenModal={createModal} />
+    <div className='admin-section padding-0'>
+      <div className='admin-section inner'>
+        <h5>Stories</h5>
+        <div>
+          <PostTable onOpenModal={createModal} />
+        </div>
+        {listModals.map((value, key) => {
+          // console.log('Value: ', value); console.log('Key: ', key);
+          return (
+            <Modal key={value.key} show={value.show} active={value.active} indexModal={value.key} isMaximized={value.isMaximized} handleClose={cancelModal} handleMinimize={hideModal} handleMaximize={resizeModal} 
+              title={value.title} >
+              <div>
+                {value.components()}
+              </div>
+            </Modal>
+          )
+        })}
       </div>
-      {listModals.map((value, key) => {
-        // console.log('Value: ', value); console.log('Key: ', key);
-        return (
-          <Modal key={value.key} show={value.show} active={value.active} indexModal={value.key} isMaximized={value.isMaximized} handleClose={cancelModal} handleMinimize={hideModal} handleMaximize={resizeModal} 
-            title={value.title} >
-            <div>
-              {value.components()}
-            </div>
-          </Modal>
-        )
-      })}
+      
       <div className='thumbnail-panel-container'>
         {listModals.map((value, key) => {
           return (

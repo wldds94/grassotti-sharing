@@ -130,7 +130,7 @@ const PostTable = (props) => {
                         bstr = Buffer.from(arr[1], 'base64'), // bstrAtob = atob(arr[1]), n = bstr.length, 
                         u8arr = new Uint8Array(bstr); // new Uint8Array(n);
                     // console.log('bstr: ', bstr); // console.log('bstrAtob: ', bstrAtob);
-
+    
                     const FileBlob = new File([u8arr], value.post_title, { type: mime, });
                     return FileBlob
                     // var temp = {

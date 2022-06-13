@@ -1,20 +1,26 @@
-.admin-section__table {
-    .add-post {
-        display: flex;
-        justify-content: flex-end;
-        padding: 1rem 0.8rem;
-        cursor: pointer;
-        font-size: 1.5rem;
-        position: absolute;
-        top: 0;
-        right: 1.5rem;
+.admin-section {
+    &.padding-0 {
+        padding: 0;
     }
 
-    // Customize Base
-    input.MuiInputBase-input.MuiInput-input.MuiInputBase-inputAdornedStart.MuiInputBase-inputAdornedEnd {
-        border: none;
-        background: white;
-        border-bottom: 1px solid #949494;
+    &__table {
+        .add-post {
+            display: flex;
+            justify-content: flex-end;
+            padding: 1rem 0.8rem;
+            cursor: pointer;
+            font-size: 1.5rem;
+            position: absolute;
+            top: 0;
+            right: 1.5rem;
+        }
+
+        // Customize Base
+        input.MuiInputBase-input.MuiInput-input.MuiInputBase-inputAdornedStart.MuiInputBase-inputAdornedEnd {
+            border: none;
+            background: white;
+            border-bottom: 1px solid #949494;
+        }
     }
 }
 
