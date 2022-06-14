@@ -34,6 +34,9 @@ class Activate extends BaseController
 
             // Setting Option
             update_option( $this->settings_option_name, $this->default );
+
+            // Activate Public Services Option
+            update_option( $this->active_public_option_name, false );
         }
 	}
 }

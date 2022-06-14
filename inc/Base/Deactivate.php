@@ -24,9 +24,14 @@ class Deactivate extends BaseController
 	public function deactivate() {
 		flush_rewrite_rules();
 
-		// Remove option - Only stage dev
+		/**
+		 * Remove option - Only stage dev
+		 */
+		// Version Option
 		delete_option( $this->version_option_name );
 		// Setting Option
 		delete_option( $this->settings_option_name );
+		// Activate Public Services Option
+		delete_option( $this->active_public_option_name );
 	}
 }

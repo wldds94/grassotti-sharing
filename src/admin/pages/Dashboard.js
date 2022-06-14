@@ -32,14 +32,19 @@ export class Dashboard extends Component {
 
     render() {
         return (
-            <div className='admin-section inner'>
-                <h5>Dashboard</h5>
-                {/* <Employes /> */}
-                <div className='admin-section__inner'>
-                    <Accordion /* panels={this.panels} */ />
-                    {/* <Accordion panels={ panels }/> */}
+            <div className='admin-section padding-0 no-overflow'>
+                <div className='admin-section__header'>
+                    <h5>Dashboard</h5>
+                </div>
+                <div className='admin-section inner'>
+                    {/* <Employes /> */}
+                    {/* <div className='admin-section__inner'> */}
+                        <Accordion /* panels={this.panels} */ />
+                        {/* <Accordion panels={ panels }/> */}
+                    {/* </div> */}
                 </div>
             </div>
+
         )
     }
 }

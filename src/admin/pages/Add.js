@@ -20,10 +20,14 @@ export class Add extends Component {
 
     render() {
         return (
-            <div className='admin-section inner'>
-                <h5>Add</h5>
-                <Form isNew={true} onLoading={this.setLoading.bind(this)} />
-                { this.state.loading ? <Loader /> : '' } 
+            <div className='admin-section padding-0 no-overflow'>
+                <div className='admin-section__header'>
+                    <h5>Add</h5>
+                </div>
+                <div className='admin-section inner'>
+                    <Form isNew={true} onLoading={this.setLoading.bind(this)} />
+                    {this.state.loading ? <Loader /> : ''}
+                </div>
             </div>
         )
     }

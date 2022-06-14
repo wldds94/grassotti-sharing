@@ -82,6 +82,9 @@ class BaseController
 
 		// Settings
 		$this->settings_option_name = 'graxsh_settings_option';
+
+		// Active Public Services
+		$this->active_public_option_name = 'graxsh_public_services_option';
     }
 
 	/**

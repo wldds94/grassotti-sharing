@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Navbar, Header } from './components';
 import { Dashboard, Stories, Add } from './pages'
 
+import 'bootstrap/dist/js/bootstrap.bundle';
+
 export class App extends Component {
     constructor(props) {
         super(props);

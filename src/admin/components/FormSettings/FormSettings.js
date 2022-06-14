@@ -61,19 +61,6 @@ export class FormSettings extends Component {
                 console.log("Error")
             })
     }
-    // static getDerivedStateFromProps(prev, state) {
-    //     console.log(this);
-    //     console.log(prev);
-    //     console.log(state);
-
-    //     return null
-    // }
-
-    componentDidUpdate(prev, state) {
-        // console.log(this);
-        // console.log(prev);
-        // console.log(state);
-    }
 
     onEditorStateChange(editorState) {
         this.setState({
@@ -126,14 +113,7 @@ export class FormSettings extends Component {
             }).then(res => {
                 const response = res.data;
                 console.log(response);
-                
-                // this.setState({
-                //     id: '',
-                //     name: '',
-                //     email: '',
-                //     title: '',
-                // });
-                
+
                 if (this.props.onLoading) {
                     this.props.onLoading(false)
                 } else {
@@ -154,35 +134,66 @@ export class FormSettings extends Component {
             <div className='form-container-wrapper'>
                 <div className='settings-form-container'>
                     <form onSubmit={this.handleSubmit}>
-                        <div className="mb-3 form-check">
-                            <input value={this.state.send_response} onChange={this.handleChange} type="checkbox" name="send_response" className="form-check-input" id="emailResponseCheck" checked={this.state.send_response} />
-                            <label className="form-check-label" htmlFor="emailResponseCheck">Send me response after publish story</label>
+                        <div className="accordion mb-3" id="accordionPanelsStayOpenExample">
+                            <div className="accordion-item">
+                                <h2 className="accordion-header" id="panelsStayOpen-headingOne">
+                                    <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                                        ACTIVATION
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseOne" className="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                                    <div className="accordion-body">
+                                        <div className="mb-3 form-check">
+                                            <input value={this.state.active_public} onChange={this.handleChange} type="checkbox" name="active_public" className="form-check-input" id="activePublicCheck" checked={this.state.active_public} />
+                                            <label className="form-check-label" htmlFor="activePublicCheck">ACTIVE PUBLIC SERVICES</label>
+                                        </div>    
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="accordion-item">
+                                <h2 className="accordion-header" id="panelsStayOpen-headingTwo">
+                                    <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true" aria-controls="panelsStayOpen-collapseTwo">
+                                        EMAIL SETTINGS ON SAVING / PUBLISHING
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseTwo" className="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingTwo">
+                                    <div className="accordion-body">
+                                        <div className="mb-3 form-check">
+                                            <input value={this.state.send_response} onChange={this.handleChange} type="checkbox" name="send_response" className="form-check-input" id="emailResponseCheck" checked={this.state.send_response} />
+                                            <label className="form-check-label" htmlFor="emailResponseCheck">Send me response after publish story</label>
+                                        </div>
+                                        <div className="mb-3">
+                                            <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
+                                            <input value={this.state.email_response} onChange={this.handleChange} type="email" name="email_response" className="form-control" id="emailResponse" aria-describedby="emailHelp" />
+                                            <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
+                                        </div>
+                                        <div className="mb-3 form-check">
+                                            <input value={this.state.email_content_custom} onChange={this.handleChange} type="checkbox" name="send_content_custom" className="form-check-input" id="emailCustomContentCheck" checked={this.state.send_content_custom} />
+                                            <label className="form-check-label" htmlFor="emailCustomContentCheck">Use custom content in email response</label>
+                                        </div>
+                                        <div className="mb-3">
+                                            <label htmlFor="exampleInputEmail1" className="form-label">Custom Email Content</label>
+                                            <JoditEditor
+                                                ref={this.editorRef}
+                                                value={this.state.email_content_custom}
+                                                config={this.config}
+                                                tabIndex={1} // tabIndex of textarea
+                                                onBlur={this.onEditorStateChange} // preferred to use only this option to update the content for performance reasons
+                                                onChange={this.onEditorStateChange}
+                                            />
+                                        </div>
+
+                                        <input type="submit" value="Submit" className="btn btn-primary" />
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div className="mb-3">
-                            <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
-                            <input value={this.state.email_response} onChange={this.handleChange} type="email" name="email_response" className="form-control" id="emailResponse" aria-describedby="emailHelp" />
-                            <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
-                        </div>
-                        <div className="mb-3 form-check">
-                            <input value={this.state.email_content_custom} onChange={this.handleChange} type="checkbox" name="send_content_custom" className="form-check-input" id="emailCustomContentCheck"  checked={this.state.send_content_custom} />
-                            <label className="form-check-label" htmlFor="emailCustomContentCheck">Use custom content in email response</label>
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor="exampleInputEmail1" className="form-label">Custom Email Content</label>
-                            <JoditEditor
-                                ref={this.editorRef}
-                                value={this.state.email_content_custom}
-                                config={this.config}
-                                tabIndex={1} // tabIndex of textarea
-                                onBlur={this.onEditorStateChange} // preferred to use only this option to update the content for performance reasons
-                                onChange={this.onEditorStateChange}
-                            />
-                        </div>
-                        <input type="submit" value="Submit" className="btn btn-primary" />
+
                     </form>
                 </div>
 
-                { this.state.loading ? <Loader /> : '' }
+                {this.state.loading ? <Loader /> : ''}
             </div>
         )
     }

@@ -90,9 +90,12 @@ export class Accordion extends Component {
                         )
                     },
                     content: () => {
+                        const labels = [
+                            '<h5>ACTIVATION</h5>',
+                            '<h5>EMAIL SETTINGS ON SAVING / PUBLISHING</h5>',
+                        ]
                         return (
                             <div>
-                                <p>EMAIL SETTINGS ON SAVING / PUBLISHING</p>
                                 <FormSettings /* data={this.state.settings} */ />
                             </div>
                         )
@@ -162,7 +165,7 @@ export class Accordion extends Component {
         const { panels } = this.state;
         // const { activeTab } = this.state;
         return (
-            <div className='accordion' role='tablist'>
+            <div className='wl-accordion' role='tablist'>
                 {panels.map((panel, index) =>
                     <Panel
                         key={index}

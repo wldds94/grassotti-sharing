@@ -6,25 +6,25 @@ import { Draggable } from '../modules';
 
 const Stories = () => {
   const [listModals, setListModals] = useState([
-    {
-      key: 0,
-      components: () => { return (<h1>Test 1</h1>) },
-      show: false,
-      active: false,
-      isMaximized: false,
-      posEnter: {
-        top: 0,
-        left: 0,
-      },
-      dimEnter: {
-        width: '70%',
-        height: '70%',
-      },
-      // isLoading: true,
-      // onLoading: (load) => {
-      //   eval()
-      // }
-    },
+    // {
+    //   key: 0,
+    //   components: () => { return (<h1>Test 1</h1>) },
+    //   show: false,
+    //   active: false,
+    //   isMaximized: false,
+    //   posEnter: {
+    //     top: 0,
+    //     left: 0,
+    //   },
+    //   dimEnter: {
+    //     width: '70%',
+    //     height: '70%',
+    //   },
+    //   // isLoading: true,
+    //   // onLoading: (load) => {
+    //   //   eval()
+    //   // }
+    // },
     /* {
       key: 1,
       components: () => { return (<h1>Test 2</h1>) },
@@ -184,8 +184,10 @@ const Stories = () => {
 
   return (
     <div className='admin-section padding-0 no-overflow'>
-      <div className='admin-section inner'>
+      <div className='admin-section__header'>
         <h5>Stories</h5>
+      </div>
+      <div className='admin-section inner'>
         <div>
           <PostTable onOpenModal={createModal} />
         </div>
