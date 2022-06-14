@@ -27,10 +27,10 @@ class Settings extends BaseController {
         
 
         $option = array(
-            'resp_check'   => $resp_check,
-            'response_email'   => $resp_email,
-            'content_check'    => $content_check,
-            'response_content' => $resp_content,
+            'send_response'   => $resp_check,
+            'email_response'   => $resp_email,
+            'send_content_custom'    => $content_check,
+            'email_content_custom' => $resp_content,
         );
         update_option( $this->settings_option_name, $option );
         $settings = get_option($this->settings_option_name, false) ?: array();
@@ -40,7 +40,7 @@ class Settings extends BaseController {
             'message' => 'Grax Settings Saved',
             'oldData' => $oldSettings,
             'data'    => $settings,
-            'post'    => $_POST,
+            // 'post'    => $_POST,
         );
     }
 
@@ -54,12 +54,13 @@ class Settings extends BaseController {
 			exit;
 		}
 
-        $settings = get_option($this->settings_option_name, false) ?: array();
+        $settings = $settings_response = get_option($this->settings_option_name, false) ?: array();
+        $settings_response['email_content_custom'] = isset($settings_response['email_content_custom']) ? html_entity_decode($settings_response['email_content_custom']) : '';
 
         return array(
             'control' => true,
             'message' => 'Grax Settings',
-            'data'    => $settings,
+            'data'    => $settings_response,
         );
     }
 }

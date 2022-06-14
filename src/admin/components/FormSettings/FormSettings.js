@@ -28,11 +28,52 @@ export class FormSettings extends Component {
         this.handleChange = this.handleInputChange.bind(this)
         this.onEditorStateChange = this.onEditorStateChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+
+        this.api = axios.create({
+            baseURL: wlninja_graxsh_admin_vars.ajax_url
+        })
+        // getDerivedStateFromProps = this.getDerivedStateFromProps.bind(this)
     }
 
-    // componentDidUpdate((props, state) => {
-        
-    // })
+    componentDidMount() {
+        this.loadData()
+    }
+
+    loadData() {
+        // console.log('You useEffect...');
+        const formData = new FormData();
+        formData.append("action", 'graxsh_route');
+        formData.append("wlank_graxsh_nonce", wlninja_graxsh_admin_vars.wl_nonce);
+        formData.append("route", 'api/v1/settings/read');
+
+        this.api.post("", formData)
+            .then(res => {
+                const response = res.data;
+                const list = response.response.data; // console.log('Data: ', response.response.data);
+                const newState = {
+                    ...this.state, ...list
+                } // 
+                console.log('newState: ', newState);
+                this.setState(newState)
+                // setData(list)
+            })
+            .catch(error => {
+                console.log("Error")
+            })
+    }
+    // static getDerivedStateFromProps(prev, state) {
+    //     console.log(this);
+    //     console.log(prev);
+    //     console.log(state);
+
+    //     return null
+    // }
+
+    componentDidUpdate(prev, state) {
+        // console.log(this);
+        // console.log(prev);
+        // console.log(state);
+    }
 
     onEditorStateChange(editorState) {
         this.setState({
@@ -100,6 +141,8 @@ export class FormSettings extends Component {
                         loading: false
                     })
                 }
+
+                this.loadData()
             })
         } catch (error) {
             console.log(error)
@@ -112,7 +155,7 @@ export class FormSettings extends Component {
                 <div className='settings-form-container'>
                     <form onSubmit={this.handleSubmit}>
                         <div className="mb-3 form-check">
-                            <input value={this.state.send_response} onChange={this.handleChange} type="checkbox" name="send_response" className="form-check-input" id="emailResponseCheck" defaultChecked={this.state.send_response} />
+                            <input value={this.state.send_response} onChange={this.handleChange} type="checkbox" name="send_response" className="form-check-input" id="emailResponseCheck" checked={this.state.send_response} />
                             <label className="form-check-label" htmlFor="emailResponseCheck">Send me response after publish story</label>
                         </div>
                         <div className="mb-3">
@@ -121,7 +164,7 @@ export class FormSettings extends Component {
                             <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
                         </div>
                         <div className="mb-3 form-check">
-                            <input value={this.state.email_content_custom} onChange={this.handleChange} type="checkbox" name="send_content_custom" className="form-check-input" id="emailCustomContentCheck"  defaultChecked={this.state.send_content_custom} />
+                            <input value={this.state.email_content_custom} onChange={this.handleChange} type="checkbox" name="send_content_custom" className="form-check-input" id="emailCustomContentCheck"  checked={this.state.send_content_custom} />
                             <label className="form-check-label" htmlFor="emailCustomContentCheck">Use custom content in email response</label>
                         </div>
                         <div className="mb-3">
