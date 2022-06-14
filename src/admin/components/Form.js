@@ -1,12 +1,17 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import Uploader from './Uploader/Uploader';
+import { Loader } from '../modules';
 
 export class Form extends Component {
     constructor(props) {
         super(props);
 
         this.isNew = props.isNew ? true : false
+        // this.onLoading = props.onLoading ? props.onLoading : false
+        this.onUpdating = props.onUpdating ? props.onUpdating : false
+        // this.onUpdating = props.onUpdating ? props.onUpdating : () => { return }
+        // this.onUpdating.bind(this)
 
         const { post } = props
         let stateAux = post ? post : {
@@ -17,6 +22,7 @@ export class Form extends Component {
             message: '',
             files: [],
             status: '',
+            loading: false,
         };
         this.state = stateAux
         // console.log('Form state Files: ', this.state.files);
@@ -63,6 +69,10 @@ export class Form extends Component {
 
         if (this.props.onLoading) {
             this.props.onLoading(true)
+        } else {
+            this.setState({
+                loading: true
+            })
         }
 
         const formData = new FormData();
@@ -102,6 +112,14 @@ export class Form extends Component {
                 
                 if (this.props.onLoading) {
                     this.props.onLoading(false)
+                } else {
+                    this.setState({
+                        loading: false
+                    })
+                }
+
+                if (this.props.onUpdating) {
+                    this.props.onUpdating()
                 }
             })
         } catch (error) {
@@ -118,7 +136,7 @@ export class Form extends Component {
         })
 
         return (
-            <div>
+            <div className='form-container-wrapper'>
                 <form onSubmit={this.handleSubmit} encType="multipart/form-data" >
                     <input type="hidden" name="id" value={this.state.name} onChange={this.handleChange} className="form-control" id="idImput" placeholder="Name" />
                     <div className="form-group">
@@ -165,6 +183,9 @@ export class Form extends Component {
                     </div>
                     <input type="submit" value="Submit" className="btn btn-primary" />
                 </form>
+                {
+                    this.state.loading ? <Loader /> : ''
+                }
             </div>
         )
     }

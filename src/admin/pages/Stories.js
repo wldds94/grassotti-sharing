@@ -9,7 +9,7 @@ const Stories = () => {
     {
       key: 0,
       components: () => { return (<h1>Test 1</h1>) },
-      show: false,
+      show: true,
       active: false,
       isMaximized: false,
       posEnter: {
@@ -20,6 +20,10 @@ const Stories = () => {
         width: '70%',
         height: '70%',
       },
+      // isLoading: true,
+      // onLoading: (load) => {
+      //   eval()
+      // }
     },
     /* {
       key: 1,
@@ -88,10 +92,10 @@ const Stories = () => {
 
 
   const createModal = (keyModal, content, title = 'New Panel') => {
-    console.info('Creating Modal');
+    // console.info('Creating Modal');
     const old = listModals
     const isOpened = old.filter((value) => {
-      var temp = Object.assign({}, value); console.log(keyModal, temp.key);
+      var temp = Object.assign({}, value); // console.log(keyModal, temp.key);
       if (Number(temp.key) === Number(keyModal)) {
         return true; // console.log('Change Value');
       }
@@ -148,7 +152,7 @@ const Stories = () => {
   }
 
   const cancelModal = (keyModal) => {
-    console.log('cancel Modal...');
+    // console.log('cancel Modal...');
 
     const newModals = listModals.filter((value, index) => {
       // console.log(value.key, keyModal);
@@ -186,7 +190,7 @@ const Stories = () => {
           <PostTable onOpenModal={createModal} />
         </div>
         {listModals.map((value, key) => {
-          console.log('Value: ', value.dimEnter); console.log('Key: ', key);
+          // console.log('Value: ', value.dimEnter); console.log('Key: ', key);
           return (
             <Draggable key={value.key} show={value.show} active={value.active} indexModal={value.key} isMaximized={value.isMaximized}
               handleClose={cancelModal} handleMinimize={hideModal} handleMaximize={resizeModal}
@@ -207,7 +211,7 @@ const Stories = () => {
       <div className={listModals.length ? 'thumbnail-panel-container visible' : 'thumbnail-panel-container'}>
         {listModals.map((value, key) => {
           return (
-            <div key={value.key} className={value.active ? 'thumb active' : 'thumb'} onClick={handleClickThumb} data-index={value.key}>
+            <div key={value.key} className={value.active ? 'thumb active' : 'thumb'} onClick={handleClickThumb} data-index={value.key} >
               {/* <BsFileEarmarkSpreadsheet /> <i className="fa fa-folder" data-index={value.key}></i>*/}<i className="fa-solid fa-folder-plus" data-index={value.key}></i>
             </div>
           )

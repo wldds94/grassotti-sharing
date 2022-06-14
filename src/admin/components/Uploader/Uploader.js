@@ -39,10 +39,7 @@ const Uploader = ({
     const [files, setFiles] = useState({});
 
     useEffect(() => {
-        console.log('initFiles: ', files);
-        // console.log('initFiles: ', initFiles);
-        // const newFiles = addNewFiles(initFiles)
-        // setFiles(newFiles);
+        // console.log('initFiles: ', files); // console.log('initFiles: ', initFiles); // const newFiles = addNewFiles(initFiles) // setFiles(newFiles);
         setFiles(initFiles);
     }, [initFiles]);
 
@@ -107,7 +104,7 @@ const Uploader = ({
                 <PreviewList>
                     {Object.keys(files).map((fileName, index) => {
                         let file = files[fileName];
-                        console.info('Uploader State Files: ', file)
+                        // console.info('Uploader State Files: ', file)
                         let isImageFile = file.type.split("/")[0] === "image";
                         return (
                             <PreviewContainer key={fileName}>

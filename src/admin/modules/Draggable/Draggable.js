@@ -1,6 +1,7 @@
 import React, { createRef, useRef, useEffect, useState } from 'react'
 import './Draggable.scss'
 import { IoWarningOutline } from 'react-icons/io'
+import Loader from '../Loader/Loader';
 
 const Draggable = ({
     handleClose,
@@ -17,6 +18,7 @@ const Draggable = ({
         width: '70%',
         height: '70%',
     },
+    isLoading,
     // dimensions = { width: '70%', height: '70%' },
     ...props }) => {
     let showHideClassName = show ? "modal display-block draggable" : "modal display-none draggable";
@@ -25,6 +27,9 @@ const Draggable = ({
 
     const boxRef = createRef()
     // const mountedRef = useRef();
+
+    const [loading, setLoading] = useState(isLoading)
+    // console.log(loading); // const loading = isLoading
 
     const [dragging, setDragging] = useState(false)
     useEffect(() => {
@@ -50,7 +55,7 @@ const Draggable = ({
     const [pos, setPos] = useState(posEnter)
     // const [dim, setPos] = useState(posEnter)
     useEffect(() => {
-        console.log('initPos: ', posEnter, pos);
+        // console.log('initPos: ', posEnter, pos);
         if (posEnter !== pos) {
             // console.log("Diversi");
             setPos(posEnter);
@@ -63,9 +68,9 @@ const Draggable = ({
     useEffect(() => {
         // console.log('initDim: ', dimEnter, dim);
         if (dimEnter === dim) {
-            console.log("Uguali");
+            // console.log("Uguali");
         } else {
-            console.log("Diversi");
+            // console.log("Diversi");
             setDim(dimEnter);
         }
         // setPos([pos]); // setDim([dim]);
@@ -83,14 +88,15 @@ const Draggable = ({
         handleMaximize(indexModal, isMaximized)
     }
 
-    const handleDrag = (e) => {
-        console.log('Dragged...');
-    }
+    // const setLoader = (load) => {
+    //     console.log('setLoader...');
+    //     setLoading(load)
+    // }
 
     // calculate relative position to the mouse and set dragging=true
     const onMouseDown = (e) => {
         // only left mouse button
-        console.log(e);
+        // console.log(e);
         if (e.button !== 0) return // console.log(this);  
         let posRel = {
             top: boxRef.current.offsetTop, // getOffsetY(),
@@ -132,7 +138,7 @@ const Draggable = ({
     }
 
     const onMouseUp = (e) => {
-        console.log('Mouse Upping');
+        // console.log('Mouse Upping');
         e.stopPropagation()
         e.preventDefault()
         setDragging(false)
@@ -172,7 +178,10 @@ const Draggable = ({
                     <div>
                         {children}
                     </div>
+                    { loading ? <Loader /> : '' }
+                   {/*  <Loader /> */}
                 </div>
+
             </section>
 
         </div>

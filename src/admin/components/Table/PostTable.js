@@ -53,6 +53,30 @@ const PostTable = (props) => {
 
     useEffect(() => {
         // console.log('You useEffect...');
+        // const formData = new FormData();
+        // formData.append("action", 'graxsh_route');
+        // formData.append("wlank_graxsh_nonce", wlninja_graxsh_admin_vars.wl_nonce);
+        // formData.append("route", 'api/v1/post/list');
+
+        // api.post("", formData)
+        //     .then(res => {
+        //         const response = res.data;
+        //         const list = response.response.data; console.log(response.response.data);
+        //         setData(list)
+        //     })
+        //     .catch(error => {
+        //         console.log("Error")
+        //     })
+        loadData()
+    }, [])
+
+    const updatePostsList = () => {
+        console.log('You updatePostsList...');
+        loadData()
+    }
+
+    const loadData = () => {
+        // console.log('You useEffect...');
         const formData = new FormData();
         formData.append("action", 'graxsh_route');
         formData.append("wlank_graxsh_nonce", wlninja_graxsh_admin_vars.wl_nonce);
@@ -67,7 +91,7 @@ const PostTable = (props) => {
             .catch(error => {
                 console.log("Error")
             })
-    }, [])
+    }
 
     const handleRowUpdate = (newData, oldData, resolve) => {
         setData([]);
@@ -146,7 +170,7 @@ const PostTable = (props) => {
             return (
                 <div>
                     {/* <h5>Edit Panel</h5> */}
-                    <Form post={post} />
+                    <Form post={post} onUpdating={updatePostsList} />
                 </div>
             )
         }, rowData.title)
@@ -158,7 +182,7 @@ const PostTable = (props) => {
             return (
                 <div>
                     {/* <h5>Edit Panel</h5> */}
-                    <Form isNew={true} />
+                    <Form isNew={true} onUpdating={updatePostsList} />
                 </div>
             )
         })
