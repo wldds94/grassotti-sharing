@@ -9,7 +9,7 @@ const Stories = () => {
     {
       key: 0,
       components: () => { return (<h1>Test 1</h1>) },
-      show: true,
+      show: false,
       active: false,
       isMaximized: false,
       posEnter: {

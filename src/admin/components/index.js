@@ -5,3 +5,4 @@ export { default as DetailPanel } from './DetailPanel';
 export { default as Modal } from './Modal/Modal';
 export { default as PostTable } from './Table/PostTable';
 export { default as Uploader } from './Uploader/Uploader';
+export { default as FormSettings } from './FormSettings/FormSettings';

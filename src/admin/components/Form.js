@@ -140,7 +140,7 @@ export class Form extends Component {
                 <div className='form-section-container'>
                     {
                         !this.isNew ? 
-                        (<div className="form-group">
+                        (<div className="mb-3">
                             <label htmlFor="nameImput"><strong>ID:</strong></label>
                             <input type="text" name="id" value={this.state.id} className="form-control" id="idImput" disabled />
                             {/* <input type="text" name="name" value={this.state.name} onChange={this.handleChange} className="form-control" id="visibleIDImput" placeholder="Name" /> */}
@@ -148,23 +148,23 @@ export class Form extends Component {
                     }
                     <form onSubmit={this.handleSubmit} encType="multipart/form-data" >
                         <input type="hidden" name="id" value={this.state.id} onChange={this.handleChange} className="form-control" id="idImput"/>
-                        <div className="form-group">
+                        <div className="mb-3">
                             <label htmlFor="nameImput">Name</label>
                             <input type="text" name="name" value={this.state.name} onChange={this.handleChange} className="form-control" id="nameImput" placeholder="Name" />
                         </div>
-                        <div className="form-group">
+                        <div className="mb-3">
                             <label htmlFor="emailImput">Email</label>
                             <input name="email" type="email" value={this.state.email} onChange={this.handleChange} className="form-control" id="emailImput" placeholder="email@domain.com" />
                         </div>
-                        <div className="form-group">
+                        <div className="mb-3">
                             <label htmlFor="titleImput">Title</label>
                             <input name="title" type="text" value={this.state.title} onChange={this.handleChange} className="form-control" id="titleImput" placeholder="Una meravigliosa giornata..." />
                         </div>
-                        <div className="form-group">
+                        <div className="mb-3">
                             <label htmlFor="titleImput">Your message</label>
                             <textarea className='form-control' id="messageInput" placeholder='Your message...' name='message' value={this.state.message} onChange={this.handleChange}></textarea>
                         </div>
-                        <div className="form-group">
+                        <div className="mb-3">
                             <label htmlFor="filesImput">Uploads</label>
                             {/* <input type="file" className='form-control' id="filesImput" name='files' multiple ref={this.state.files} onChange={this.handleFiles} /> */}
                             <div className='uploader-container'>
@@ -177,7 +177,7 @@ export class Form extends Component {
                                 />
                             </div>
                         </div>
-                        <div className="form-group">
+                        <div className="mb-3">
                             <label htmlFor="statusImput" className='mr-10'>Status:</label>
                             <div className="radio-container">
                                 <span>
