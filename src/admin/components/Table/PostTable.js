@@ -158,7 +158,7 @@ const PostTable = (props) => {
             return (
                 <div>
                     {/* <h5>Edit Panel</h5> */}
-                    <Form />
+                    <Form isNew={true} />
                 </div>
             )
         })

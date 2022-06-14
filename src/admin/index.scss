@@ -35,6 +35,11 @@ code {
     max-height: calc(100%);
     min-height: calc(100%);
     // max-height: calc(100% - 45px);
+    padding-bottom: 65px;
+  }
+
+  &.no-overflow {
+    overflow: hidden;
   }
 }
 

@@ -9,8 +9,8 @@ const Stories = () => {
     {
       key: 0,
       components: () => { return (<h1>Test 1</h1>) },
-      show: true,
-      active: true,
+      show: false,
+      active: false,
       isMaximized: false,
       posEnter: {
         top: 0,
@@ -89,62 +89,62 @@ const Stories = () => {
 
   const createModal = (keyModal, content, title = 'New Panel') => {
     console.info('Creating Modal');
-    // const old = listModals
-    // const isOpened = old.filter((value) => {
-    //   var temp = Object.assign({}, value); console.log(keyModal, temp.key);
-    //   if (Number(temp.key) === Number(keyModal)) {
-    //     return true; // console.log('Change Value');
-    //   }
-    //   // return false;
-    // })    
-    // // console.log('isOpened: ', isOpened, 'OLD: ', old);
+    const old = listModals
+    const isOpened = old.filter((value) => {
+      var temp = Object.assign({}, value); console.log(keyModal, temp.key);
+      if (Number(temp.key) === Number(keyModal)) {
+        return true; // console.log('Change Value');
+      }
+      // return false;
+    })
+    // console.log('isOpened: ', isOpened, 'OLD: ', old);
 
-    // // let newModals = null
-    // let newModals = listModals.map((value) => {
-    //   var temp = Object.assign({}, value); // console.log(temp, temp.key);
-    //   if (Number(temp.key) === Number(keyModal)) {
-    //     temp.active = true; // console.log('Change Value');
-    //     temp.show = true;
-    //   } else {
-    //     temp.active = false // console.log('Not Change Value');
-    //   }
-    //   return temp;
+    // let newModals = null
+    let newModals = listModals.map((value) => {
+      var temp = Object.assign({}, value); // console.log(temp, temp.key);
+      if (Number(temp.key) === Number(keyModal)) {
+        temp.active = true; // console.log('Change Value');
+        temp.show = true;
+      } else {
+        temp.active = false // console.log('Not Change Value');
+      }
+      return temp;
+    })
+    if (!isOpened.length > 0) {
+      const newModal = {
+        key: keyModal,
+        title: title,
+        components: content,
+        show: true,
+        active: true,
+        isMaximized: false,
+        posEnter: {
+          top: 0,
+          left: 0,
+        },
+        dimEnter: {
+          width: '70%',
+          height: '70%',
+        },
+      }
+
+      setListModals([...newModals, newModal])
+    } else {
+      setListModals(newModals)
+    }
+    // setListModals(prevState => {
+    //   return newModals
     // })
-    // if (!isOpened.length > 0) {
-    //   const newModal = {
-    //     key: keyModal,
-    //     title: title,
-    //     components: content,
-    //     show: true,
-    //     active: true,
-    //     isMaximized: false,
-    //     pos: {
-    //       top: 0,
-    //       left: 0,
-    //     },
-    //     dim: {
-    //       width: '70%',
-    //       height: '70%',
-    //     },
-    //   }
+    // console.log('New Modal: ', newModal);
 
-    //   setListModals([...newModals, newModal])
-    // } else {
-    //   setListModals(newModals)
-    // }
-    // // setListModals(prevState => {
-    // //   return newModals
-    // // })
-    // // console.log('New Modal: ', newModal);
-
-    // // // console.log(listModals); // old.push(newModal) // setListModals(old)
-    // // setListModals(prevState => {
-    // //   // return old
-    // //   return [
-    // //     ...prevState,
-    // //     newModal
-    // //   ] // prevState.push(newModal)
-    // // })
+    // // console.log(listModals); // old.push(newModal) // setListModals(old)
+    // setListModals(prevState => {
+    //   // return old
+    //   return [
+    //     ...prevState,
+    //     newModal
+    //   ] // prevState.push(newModal)
+    // })
   }
 
   const cancelModal = (keyModal) => {
@@ -179,7 +179,7 @@ const Stories = () => {
   }
 
   return (
-    <div className='admin-section padding-0'>
+    <div className='admin-section padding-0 no-overflow'>
       <div className='admin-section inner'>
         <h5>Stories</h5>
         <div>
@@ -188,8 +188,8 @@ const Stories = () => {
         {listModals.map((value, key) => {
           console.log('Value: ', value.dimEnter); console.log('Key: ', key);
           return (
-            <Draggable key={value.key} show={value.show} active={value.active} indexModal={value.key} isMaximized={value.isMaximized} 
-              handleClose={cancelModal} handleMinimize={hideModal} handleMaximize={resizeModal} 
+            <Draggable key={value.key} show={value.show} active={value.active} indexModal={value.key} isMaximized={value.isMaximized}
+              handleClose={cancelModal} handleMinimize={hideModal} handleMaximize={resizeModal}
               title={value.title} posEnter={value.posEnter} dimEnter={value.dimEnter} >
               {value.components()}
               {/* <Modal key={value.key} show={value.show} active={value.active} indexModal={value.key} isMaximized={value.isMaximized} handleClose={cancelModal} handleMinimize={hideModal} handleMaximize={resizeModal} 
@@ -199,12 +199,12 @@ const Stories = () => {
                 </div>
               </Modal> */}
             </Draggable>
-            
+
           )
         })}
       </div>
-      
-      <div className='thumbnail-panel-container'>
+
+      <div className={listModals.length ? 'thumbnail-panel-container visible' : 'thumbnail-panel-container'}>
         {listModals.map((value, key) => {
           return (
             <div key={value.key} className={value.active ? 'thumb active' : 'thumb'} onClick={handleClickThumb} data-index={value.key}>

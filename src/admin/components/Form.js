@@ -61,6 +61,10 @@ export class Form extends Component {
         event.preventDefault();
         // console.log(this.state);
 
+        if (this.props.onLoading) {
+            this.props.onLoading(true)
+        }
+
         const formData = new FormData();
         formData.append("id", this.state.id);
         formData.append("name", this.state.name);
@@ -94,7 +98,11 @@ export class Form extends Component {
                         message: '',
                         files: [],
                     });
-                }                
+                }
+                
+                if (this.props.onLoading) {
+                    this.props.onLoading(false)
+                }
             })
         } catch (error) {
             console.log(error)

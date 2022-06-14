@@ -1,5 +1,6 @@
 import React, { createRef, useRef, useEffect, useState } from 'react'
 import './Draggable.scss'
+import { IoWarningOutline } from 'react-icons/io'
 
 const Draggable = ({
     handleClose,
@@ -50,12 +51,12 @@ const Draggable = ({
     // const [dim, setPos] = useState(posEnter)
     useEffect(() => {
         console.log('initPos: ', posEnter, pos);
-        if (posEnter === pos) {
-            console.log("Uguali");
-        } else {
-            console.log("Diversi");
+        if (posEnter !== pos) {
+            // console.log("Diversi");
             setPos(posEnter);
-        }
+           
+        } else { /* console.log("Uguali"); */ }
+
     }, [posEnter])
 
     const [dim, setDim] = useState(dimEnter)
@@ -89,18 +90,19 @@ const Draggable = ({
     // calculate relative position to the mouse and set dragging=true
     const onMouseDown = (e) => {
         // only left mouse button
+        console.log(e);
         if (e.button !== 0) return // console.log(this);  
         let posRel = {
             top: boxRef.current.offsetTop, // getOffsetY(),
             left: boxRef.current.offsetLeft // getOffsetX(),
         } // console.log(pos);
-        console.log('POSREL Verify: ', e.pageX, posRel.left, e.pageY, posRel.top);
+        // console.log('POSREL Verify: ', e.pageX, posRel.left, e.pageY, posRel.top);
         // console.log('POSREL: ', posRel);
         let newRel = {
             left: e.pageX - posRel.left,
             top: e.pageY - posRel.top
         }
-        console.log('POS-NEW-REL Verify: ', newRel);
+        // console.log('POS-NEW-REL Verify: ', newRel);
         setRel(newRel)
         setDragging(true)
         e.stopPropagation()
@@ -119,17 +121,12 @@ const Draggable = ({
 
     const onMouseMove = (e) => {
         if (!dragging) return
-        console.log('Mouse Moving');
-        // console.log('Old Pos: ', rel, 'Ref: ', mountedRef.current);
-        console.log('Pos Verify: ', e.pageX, rel.left, e.pageY, rel.top);
-        console.log('Pos Verify MINUS: ', Number(e.pageX) - Number(rel.x) );
+        // console.log('Mouse Moving'); // console.log('Old Pos: ', rel, 'Ref: ', mountedRef.current); // console.log('Pos Verify: ', e.pageX, rel.left, e.pageY, rel.top); // console.log('Pos Verify MINUS: ', Number(e.pageX) - Number(rel.left) );
         const newPos = {
-            left: Number(e.pageX) - Number(rel.left),
+            left: e.pageX - rel.left,
             top: e.pageY - rel.top
         }
-        console.log('New Pos: ', newPos);
-        setPos(newPos)
-        console.log('New Pos CONSTANT: ', pos);
+        setPos(newPos) // console.log('New Pos: ', newPos); // console.log('New Pos CONSTANT: ', pos);
         e.stopPropagation()
         e.preventDefault()
     }
@@ -148,10 +145,10 @@ const Draggable = ({
             width: dim.width,
             height: dim.height,
             position: 'absolute',
-        }} className={showHideClassName} data-modal={indexModal} onMouseDown={onMouseDown} ref={boxRef}>
+        }} className={showHideClassName} data-modal={indexModal} ref={boxRef}>
             {/* <div>{dim.width} - {dim.height}</div> */}
             <section className="modal-main">
-                <div className="window__titlebar ui-draggable-handle" /* onDrag={handleDrag} */ >
+                <div className="window__titlebar ui-draggable-handle" /* onDrag={handleDrag} */onMouseDown={onMouseDown} >
                     <div className="actions-container window__controls window__controls--right">
                         <div className="window__controls window__controls--left">
                             <a className="window__icon" href="#"><i className="fa fa-folder"></i></a>
