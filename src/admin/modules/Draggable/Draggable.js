@@ -1,107 +1,185 @@
-import React, { Component } from 'react'
+import React, { createRef, useRef, useEffect, useState } from 'react'
 import './Draggable.scss'
 
-export class Draggable extends Component {
-    constructor(props) {
-        super(props)
+const Draggable = ({
+    handleClose,
+    handleMinimize,
+    handleMaximize,
+    title = 'New Panel',
+    children,
+    show = false,
+    active = false,
+    indexModal,
+    isMaximized,
+    posEnter,
+    dimEnter = {
+        width: '70%',
+        height: '70%',
+    },
+    // dimensions = { width: '70%', height: '70%' },
+    ...props }) => {
+    let showHideClassName = show ? "modal display-block draggable" : "modal display-none draggable";
+    showHideClassName += active ? " active" : ''
+    showHideClassName += isMaximized ? " maximized" : ''
 
-        this.state = {
-            pos: this.props.initialPos,
-            dragging: false,
-            rel: null // position relative to the cursor
+    const boxRef = createRef()
+    // const mountedRef = useRef();
+
+    const [dragging, setDragging] = useState(false)
+    useEffect(() => {
+        // console.log('Check Drag..');
+        // console.log('Ref: ', boxRef.current.dragging);
+        // console.log('Dragging: ', dragging);
+        if (dragging) {
+            document.addEventListener('mousemove', onMouseMove)
+            document.addEventListener('mouseup', onMouseUp)
+        }       
+
+        return () => {
+            document.removeEventListener('mousemove', onMouseMove)
+            document.removeEventListener('mouseup', onMouseUp)
         }
+    }, [dragging])
 
-        this.myRef = React.createRef();
-    }
+    const [rel, setRel] = useState(null)
+    // useEffect(() => {
+    //     mountedRef.current = rel
+    // }, [rel])
 
-    // static getDerivedFromProps(props, state) {
-    //     if (props.initialPos !== state.pos) {
-    //         return {
-    //             pos: props.initialPos,
-    //         }
-    //     } else {
-    //         return null
-    //     }
-    // }
-
-    componentDidUpdate(props, state) {
-        if (this.state.dragging && !state.dragging) {
-            document.addEventListener('mousemove', this.onMouseMove.bind(this))
-            document.addEventListener('mouseup', this.onMouseUp.bind(this))
-        } else if (!this.state.dragging && state.dragging) {
-            document.removeEventListener('mousemove', this.onMouseMove.bind(this))
-            document.removeEventListener('mouseup', this.onMouseUp.bind(this))
+    const [pos, setPos] = useState(posEnter)
+    // const [dim, setPos] = useState(posEnter)
+    useEffect(() => {
+        console.log('initPos: ', posEnter, pos);
+        if (posEnter === pos) {
+            console.log("Uguali");
+        } else {
+            console.log("Diversi");
+            setPos(posEnter);
         }
+    }, [posEnter])
+
+    const [dim, setDim] = useState(dimEnter)
+    useEffect(() => {
+        // console.log('initDim: ', dimEnter, dim);
+        if (dimEnter === dim) {
+            console.log("Uguali");
+        } else {
+            console.log("Diversi");
+            setDim(dimEnter);
+        }
+        // setPos([pos]); // setDim([dim]);
+    }, [dimEnter])
+
+    const cancelPanel = (e) => {
+        handleClose(indexModal)
     }
 
-    getOffsetY() {
-        // console.log(this.myRef.current.offsetTop); 
-        return this.myRef.current.offsetTop 
+    const hidePanel = (e) => {
+        handleMinimize(indexModal)
     }
 
-    getOffsetX() {
-        // console.log(this.myRef.current.offsetTop); 
-        return this.myRef.current.offsetLeft 
+    const maximizePanel = (e) => {
+        handleMaximize(indexModal, isMaximized)
+    }
+
+    const handleDrag = (e) => {
+        console.log('Dragged...');
     }
 
     // calculate relative position to the mouse and set dragging=true
-    onMouseDown(e) {
+    const onMouseDown = (e) => {
         // only left mouse button
         if (e.button !== 0) return // console.log(this);  
-        let pos = {
-            top: this.getOffsetY(),
-            left: this.getOffsetX(),
+        let posRel = {
+            top: boxRef.current.offsetTop, // getOffsetY(),
+            left: boxRef.current.offsetLeft // getOffsetX(),
         } // console.log(pos);
-        // var pos = $(React.findDOMNode(this)).offset()
-        this.setState({
-            dragging: true,
-            rel: {
-                x: e.pageX - pos.left,
-                y: e.pageY - pos.top
-            }
-        })
+        console.log('POSREL Verify: ', e.pageX, posRel.left, e.pageY, posRel.top);
+        // console.log('POSREL: ', posRel);
+        let newRel = {
+            left: e.pageX - posRel.left,
+            top: e.pageY - posRel.top
+        }
+        console.log('POS-NEW-REL Verify: ', newRel);
+        setRel(newRel)
+        setDragging(true)
         e.stopPropagation()
         e.preventDefault()
     }
 
-    onMouseUp(e) {
-        this.setState({ dragging: false })
+    // getOffsetY = () => {
+    //     // console.log(this.myRef.current.offsetTop); 
+    //     return boxRef.current.offsetTop
+    // }
+
+    // getOffsetX = () => {
+    //     // console.log(this.myRef.current.offsetTop); 
+    //     return boxRef.current.offsetLeft
+    // }
+
+    const onMouseMove = (e) => {
+        if (!dragging) return
+        console.log('Mouse Moving');
+        // console.log('Old Pos: ', rel, 'Ref: ', mountedRef.current);
+        console.log('Pos Verify: ', e.pageX, rel.left, e.pageY, rel.top);
+        console.log('Pos Verify MINUS: ', Number(e.pageX) - Number(rel.x) );
+        const newPos = {
+            left: Number(e.pageX) - Number(rel.left),
+            top: e.pageY - rel.top
+        }
+        console.log('New Pos: ', newPos);
+        setPos(newPos)
+        console.log('New Pos CONSTANT: ', pos);
         e.stopPropagation()
         e.preventDefault()
     }
 
-    onMouseMove(e) {
-        if (!this.state.dragging) return
-        this.setState({
-            pos: {
-                x: e.pageX - this.state.rel.x,
-                y: e.pageY - this.state.rel.y
-            }
-        })
+    const onMouseUp = (e) => {
+        console.log('Mouse Upping');
         e.stopPropagation()
         e.preventDefault()
+        setDragging(false)
     }
 
-    render() {
-        return (
+    return (
+        <div style={{
+            left: pos.left + 'px',
+            top: pos.top + 'px',
+            width: dim.width,
+            height: dim.height,
+            position: 'absolute',
+        }} className={showHideClassName} data-modal={indexModal} onMouseDown={onMouseDown} ref={boxRef}>
+            {/* <div>{dim.width} - {dim.height}</div> */}
+            <section className="modal-main">
+                <div className="window__titlebar ui-draggable-handle" /* onDrag={handleDrag} */ >
+                    <div className="actions-container window__controls window__controls--right">
+                        <div className="window__controls window__controls--left">
+                            <a className="window__icon" href="#"><i className="fa fa-folder"></i></a>
+                        </div>
+                        <span className="window__title">
+                            {title}
+                        </span>
+                        <div className="window__controls window__controls--right">
+                            <a className="window__minimize" href="#" onClick={hidePanel}><i className="fa fa-minus"></i></a>
+                            <a className="window__resize" href="#" onClick={maximizePanel}>
+                                {isMaximized ? <i className="fa fa-window-restore"></i> : <i className="fa-solid fa-maximize"></i>}
+                            </a>
+                            {/* <a className="window__maximize" href="#" onClick={maximizePanel}></a> // */}
+                            <a className="window__close" href="#" onClick={cancelPanel}><i className="fa fa-close"></i></a>
+                        </div>
 
-            <div style={{
-                left: this.state.pos.x + 'px',
-                top: this.state.pos.y + 'px',
-                width: this.state.pos.width,
-                height: this.state.pos.height,
-                position: 'absolute',
-            }} className={this.props.className} onMouseDown={this.onMouseDown.bind(this)} ref={this.myRef} >
-                {/* <React.StrictMode > 
-                {this.props.children style={{
-                    left: this.state.pos.x + 'px',
-                    top: this.state.pos.y + 'px'
-                }} onMouseDown={this.onMouseDown}} */}
-                {this.props.children}
-                {/* </React.StrictMode> */}
-            </div>
-        )
-    }
+                    </div>
+                </div>
+
+                <div className='admin-section'>
+                    <div>
+                        {children}
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    )
 }
 
 export default Draggable

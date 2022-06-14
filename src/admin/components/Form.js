@@ -19,7 +19,7 @@ export class Form extends Component {
             status: '',
         };
         this.state = stateAux
-        console.log('Form state Files: ', this.state.files);
+        // console.log('Form state Files: ', this.state.files);
 
         this.handleChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -48,7 +48,7 @@ export class Form extends Component {
         this.setState({
             [name]: value
         });
-        console.log('Change detected. State updated' + name + ' = ' + value);
+        // console.log('Change detected. State updated' + name + ' = ' + value);
     }
 
     handleFiles(files) {

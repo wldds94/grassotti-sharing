@@ -7,6 +7,8 @@
     background: rgba(0, 0, 0, 0.6);
     // transition: all 320ms ease-in-out;
     box-shadow: 2px 3px 35px 4px rgba(0 0 0 / 75%);
+    overflow-x: hidden;
+    overflow-y: hidden;
 
     &.display-block {
         display: block;

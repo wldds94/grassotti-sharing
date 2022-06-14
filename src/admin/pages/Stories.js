@@ -2,16 +2,26 @@ import React, { useState } from 'react'
 import { PostTable, Modal } from '../components';
 import { BsFileEarmarkSpreadsheet } from 'react-icons/bs';
 
+import { Draggable } from '../modules';
+
 const Stories = () => {
   const [listModals, setListModals] = useState([
-    /* {
+    {
       key: 0,
       components: () => { return (<h1>Test 1</h1>) },
-      show: false,
-      active: false,
-      isMaximized: true,
+      show: true,
+      active: true,
+      isMaximized: false,
+      posEnter: {
+        top: 0,
+        left: 0,
+      },
+      dimEnter: {
+        width: '70%',
+        height: '70%',
+      },
     },
-    {
+    /* {
       key: 1,
       components: () => { return (<h1>Test 2</h1>) },
       show: false,
@@ -35,8 +45,21 @@ const Stories = () => {
         temp.isMaximized = !isMaximized; // console.log('Change Value');
         // temp.show = false;
         if (!isMaximized) {
-          temp.layout = { left: 0, top: 0, ...value.layout }
-          console.log('Have To Maximize: ', temp.layout);
+          temp.posEnter = {
+            top: 0,
+            left: 0,
+          }
+          temp.dimEnter = {
+            width: '100%',
+            height: '100%',
+          }
+          console.log('Have To Maximize: ');
+        } else {
+          console.log('Have To Minimize: ');
+          temp.dimEnter = {
+            width: '70%',
+            height: '70%',
+          }
         }
       }
       return temp;
@@ -66,55 +89,62 @@ const Stories = () => {
 
   const createModal = (keyModal, content, title = 'New Panel') => {
     console.info('Creating Modal');
-    const old = listModals
-    const isOpened = old.filter((value) => {
-      var temp = Object.assign({}, value); console.log(keyModal, temp.key);
-      if (Number(temp.key) === Number(keyModal)) {
-        return true; // console.log('Change Value');
-      }
-      // return false;
-    })    
-    // console.log('isOpened: ', isOpened, 'OLD: ', old);
+    // const old = listModals
+    // const isOpened = old.filter((value) => {
+    //   var temp = Object.assign({}, value); console.log(keyModal, temp.key);
+    //   if (Number(temp.key) === Number(keyModal)) {
+    //     return true; // console.log('Change Value');
+    //   }
+    //   // return false;
+    // })    
+    // // console.log('isOpened: ', isOpened, 'OLD: ', old);
 
-    // let newModals = null
-    let newModals = listModals.map((value) => {
-      var temp = Object.assign({}, value); // console.log(temp, temp.key);
-      if (Number(temp.key) === Number(keyModal)) {
-        temp.active = true; // console.log('Change Value');
-        temp.show = true;
-      } else {
-        temp.active = false // console.log('Not Change Value');
-      }
-      return temp;
-    })
-    if (!isOpened.length > 0) {
-      const newModal = {
-        key: keyModal,
-        title: title,
-        components: content,
-        show: true,
-        active: true,
-        isMaximized: false,
-        layout: { left: 0, top: 0, width: '70%', height: '70%' }
-      }
-
-      setListModals([...newModals, newModal])
-    } else {
-      setListModals(newModals)
-    }
-    // setListModals(prevState => {
-    //   return newModals
+    // // let newModals = null
+    // let newModals = listModals.map((value) => {
+    //   var temp = Object.assign({}, value); // console.log(temp, temp.key);
+    //   if (Number(temp.key) === Number(keyModal)) {
+    //     temp.active = true; // console.log('Change Value');
+    //     temp.show = true;
+    //   } else {
+    //     temp.active = false // console.log('Not Change Value');
+    //   }
+    //   return temp;
     // })
-    // console.log('New Modal: ', newModal);
+    // if (!isOpened.length > 0) {
+    //   const newModal = {
+    //     key: keyModal,
+    //     title: title,
+    //     components: content,
+    //     show: true,
+    //     active: true,
+    //     isMaximized: false,
+    //     pos: {
+    //       top: 0,
+    //       left: 0,
+    //     },
+    //     dim: {
+    //       width: '70%',
+    //       height: '70%',
+    //     },
+    //   }
 
-    // // console.log(listModals); // old.push(newModal) // setListModals(old)
-    // setListModals(prevState => {
-    //   // return old
-    //   return [
-    //     ...prevState,
-    //     newModal
-    //   ] // prevState.push(newModal)
-    // })
+    //   setListModals([...newModals, newModal])
+    // } else {
+    //   setListModals(newModals)
+    // }
+    // // setListModals(prevState => {
+    // //   return newModals
+    // // })
+    // // console.log('New Modal: ', newModal);
+
+    // // // console.log(listModals); // old.push(newModal) // setListModals(old)
+    // // setListModals(prevState => {
+    // //   // return old
+    // //   return [
+    // //     ...prevState,
+    // //     newModal
+    // //   ] // prevState.push(newModal)
+    // // })
   }
 
   const cancelModal = (keyModal) => {
@@ -124,7 +154,7 @@ const Stories = () => {
       // console.log(value.key, keyModal);
       return value.key !== keyModal
     })
-    console.log(newModals);
+    // console.log(newModals);
     setListModals(prevState => {
       return newModals // return old // prevState.push(newModal)
     })
@@ -156,14 +186,20 @@ const Stories = () => {
           <PostTable onOpenModal={createModal} />
         </div>
         {listModals.map((value, key) => {
-          console.log('Value: ', value.layout); console.log('Key: ', key);
+          console.log('Value: ', value.dimEnter); console.log('Key: ', key);
           return (
-            <Modal key={value.key} show={value.show} active={value.active} indexModal={value.key} isMaximized={value.isMaximized} handleClose={cancelModal} handleMinimize={hideModal} handleMaximize={resizeModal} 
-              title={value.title} layout={value.layout} >
-              <div>
-                {value.components()}
-              </div>
-            </Modal>
+            <Draggable key={value.key} show={value.show} active={value.active} indexModal={value.key} isMaximized={value.isMaximized} 
+              handleClose={cancelModal} handleMinimize={hideModal} handleMaximize={resizeModal} 
+              title={value.title} posEnter={value.posEnter} dimEnter={value.dimEnter} >
+              {value.components()}
+              {/* <Modal key={value.key} show={value.show} active={value.active} indexModal={value.key} isMaximized={value.isMaximized} handleClose={cancelModal} handleMinimize={hideModal} handleMaximize={resizeModal} 
+                title={value.title} layout={value.layout} >
+                <div>
+                  {value.components()}
+                </div>
+              </Modal> */}
+            </Draggable>
+            
           )
         })}
       </div>
