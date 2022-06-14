@@ -20,6 +20,7 @@ class Settings extends BaseController {
 
         $oldSettings = get_option($this->settings_option_name, false) ?: array();
 
+        $active_public = filter_var(sanitize_text_field( $_POST['response_check'] ), FILTER_VALIDATE_BOOLEAN); 
         $resp_check = filter_var(sanitize_text_field( $_POST['response_check'] ), FILTER_VALIDATE_BOOLEAN); // sanitize_text_field( $_POST['response_check'] );
 		$resp_email = sanitize_text_field( $_POST['response_email'] );
         $content_check = filter_var(sanitize_text_field( $_POST['content_check'] ), FILTER_VALIDATE_BOOLEAN); // sanitize_text_field( $_POST['content_check'] );
@@ -27,6 +28,7 @@ class Settings extends BaseController {
         
 
         $option = array(
+            'active_public'   => $active_public,
             'send_response'   => $resp_check,
             'email_response'   => $resp_email,
             'send_content_custom'    => $content_check,

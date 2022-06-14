@@ -16,6 +16,7 @@ export class FormSettings extends Component {
         }
 
         this.state = {
+            active_public: this.props.data ? (this.props.data.active_public ? this.props.data.active_public : false) : false, // false, /* this.props.data ? (this.props.data.active_public && undefined !== this.props.data.active_public ? this.props.data.active_public : false) : false, */ 
             send_response: this.props.data ? (this.props.data.send_response ?? false) : false,
             email_response: this.props.data ? (this.props.data.email_response ?? '') : '', // '',
             send_content_custom: this.props.data ? (this.props.data.send_content_custom ?? false) : false, // false,
@@ -94,6 +95,7 @@ export class FormSettings extends Component {
         }
 
         const formData = new FormData();
+        formData.append("active_public", this.state.active_public);
         formData.append("response_check", this.state.send_response);
         formData.append("response_email", this.state.email_response);
         formData.append("content_check", this.state.send_content_custom);
