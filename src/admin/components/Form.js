@@ -137,52 +137,63 @@ export class Form extends Component {
 
         return (
             <div className='form-container-wrapper'>
-                <form onSubmit={this.handleSubmit} encType="multipart/form-data" >
-                    <input type="hidden" name="id" value={this.state.name} onChange={this.handleChange} className="form-control" id="idImput" placeholder="Name" />
-                    <div className="form-group">
-                        <label htmlFor="nameImput">Name</label>
-                        <input type="text" name="name" value={this.state.name} onChange={this.handleChange} className="form-control" id="nameImput" placeholder="Name" />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="emailImput">Email</label>
-                        <input name="email" type="email" value={this.state.email} onChange={this.handleChange} className="form-control" id="emailImput" placeholder="email@domain.com" />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="titleImput">Title</label>
-                        <input name="title" type="text" value={this.state.title} onChange={this.handleChange} className="form-control" id="titleImput" placeholder="Una meravigliosa giornata..." />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="titleImput">Your message</label>
-                        <textarea className='form-control' id="messageInput" placeholder='Your message...' name='message' value={this.state.message} onChange={this.handleChange}></textarea>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="filesImput">Uploads</label>
-                        {/* <input type="file" className='form-control' id="filesImput" name='files' multiple ref={this.state.files} onChange={this.handleFiles} /> */}
-                        <div className='uploader-container'>
-                            <Uploader
-                                accept=".jpg,.png,.jpeg,.svg"
-                                initFiles={entry}
-                                // initFiles={{ ...this.state.files }} // initFiles={this.state.files.reduceRight((all, item) => ({[item]: all}), {})}
-                                multiple
-                                onLoading={this.handleFiles.bind(this)}
-                            />
+                <div className='form-section-container'>
+                    {
+                        !this.isNew ? 
+                        (<div className="form-group">
+                            <label htmlFor="nameImput"><strong>ID:</strong></label>
+                            <input type="text" name="id" value={this.state.id} className="form-control" id="idImput" disabled />
+                            {/* <input type="text" name="name" value={this.state.name} onChange={this.handleChange} className="form-control" id="visibleIDImput" placeholder="Name" /> */}
+                        </div>) : ( '' )
+                    }
+                    <form onSubmit={this.handleSubmit} encType="multipart/form-data" >
+                        <input type="hidden" name="id" value={this.state.id} onChange={this.handleChange} className="form-control" id="idImput"/>
+                        <div className="form-group">
+                            <label htmlFor="nameImput">Name</label>
+                            <input type="text" name="name" value={this.state.name} onChange={this.handleChange} className="form-control" id="nameImput" placeholder="Name" />
                         </div>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="statusImput" className='mr-10'>Status:</label>
-                        <div className="radio-container">
-                            <span>
-                                <label htmlFor="statusImput0">Bozza</label>
-                                <input type="radio" name="status" value='0' onChange={this.handleChange} className="form-control" id="statusImput0" />
-                            </span>
-                            <span>
-                                <label htmlFor="statusImput1">Publish</label>
-                                <input type="radio" name="status" value='1' onChange={this.handleChange} className="form-control" id="statusImput1" />
-                            </span>
+                        <div className="form-group">
+                            <label htmlFor="emailImput">Email</label>
+                            <input name="email" type="email" value={this.state.email} onChange={this.handleChange} className="form-control" id="emailImput" placeholder="email@domain.com" />
                         </div>
-                    </div>
-                    <input type="submit" value="Submit" className="btn btn-primary" />
-                </form>
+                        <div className="form-group">
+                            <label htmlFor="titleImput">Title</label>
+                            <input name="title" type="text" value={this.state.title} onChange={this.handleChange} className="form-control" id="titleImput" placeholder="Una meravigliosa giornata..." />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="titleImput">Your message</label>
+                            <textarea className='form-control' id="messageInput" placeholder='Your message...' name='message' value={this.state.message} onChange={this.handleChange}></textarea>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="filesImput">Uploads</label>
+                            {/* <input type="file" className='form-control' id="filesImput" name='files' multiple ref={this.state.files} onChange={this.handleFiles} /> */}
+                            <div className='uploader-container'>
+                                <Uploader
+                                    accept=".jpg,.png,.jpeg,.svg"
+                                    initFiles={entry}
+                                    // initFiles={{ ...this.state.files }} // initFiles={this.state.files.reduceRight((all, item) => ({[item]: all}), {})}
+                                    multiple
+                                    onLoading={this.handleFiles.bind(this)}
+                                />
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="statusImput" className='mr-10'>Status:</label>
+                            <div className="radio-container">
+                                <span>
+                                    <label htmlFor="statusImput0">Bozza</label>
+                                    <input type="radio" name="status" value='0' onChange={this.handleChange} className="form-control" id="statusImput0" />
+                                </span>
+                                <span>
+                                    <label htmlFor="statusImput1">Publish</label>
+                                    <input type="radio" name="status" value='1' onChange={this.handleChange} className="form-control" id="statusImput1" />
+                                </span>
+                            </div>
+                        </div>
+                        <input type="submit" value="Submit" className="btn btn-primary" />
+                    </form>
+                </div>
+                
                 {
                     this.state.loading ? <Loader /> : ''
                 }
