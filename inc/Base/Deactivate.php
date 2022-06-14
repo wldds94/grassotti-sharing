@@ -26,5 +26,7 @@ class Deactivate extends BaseController
 
 		// Remove option - Only stage dev
 		delete_option( $this->version_option_name );
+		// Setting Option
+		delete_option( $this->settings_option_name );
 	}
 }

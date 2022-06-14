@@ -46,6 +46,11 @@ class BaseController
 	 */
 	public $cpt_slug;
 
+	/**
+	 * Settings
+	 */
+	public $settings_option_name;
+
 	public function __construct() {
 
 		$this->version = GRAXSH_VERSION;
@@ -74,6 +79,9 @@ class BaseController
 		// Post Meta
 		$this->cpt_slug_user_meta = '_graxsh_story_meta';
 		$this->cpt_attachments_meta_name = '_graxsh_attach_meta';
+
+		// Settings
+		$this->settings_option_name = 'graxsh_settings_option';
     }
 
 	/**

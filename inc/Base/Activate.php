@@ -31,6 +31,9 @@ class Activate extends BaseController
 
         if( $this->activateOption != $this->version ) {
             update_option( $this->version_option_name, $this->version );
+
+            // Setting Option
+            update_option( $this->settings_option_name, $this->default );
         }
 	}
 }

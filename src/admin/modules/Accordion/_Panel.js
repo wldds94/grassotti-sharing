@@ -19,6 +19,12 @@ export class _Panel extends Component {
                 return
             }
             const height = this.pRef.current.querySelector('.panel__inner').scrollHeight;
+            // const heightPanel = this.pRef.current.querySelector('.panel__content').scrollHeight;
+            // console.log(height, this.pRef.current.querySelector('.panel__inner').offsetHeight);
+            // console.log(height, this.pRef.current.querySelector('.panel__inner').height);
+            // console.log(height, this.pRef.current.querySelector('.panel__inner'));
+            // console.log(heightPanel, this.pRef.current.querySelector('.panel__inner'));
+
             this.setState({
                 height
             });

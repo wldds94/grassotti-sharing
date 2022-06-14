@@ -11,6 +11,8 @@ $little-cursor: white;
     float: left;
     background: rgba(255 255 255 / 80%);
     z-index: 9;
+
+    background: radial-gradient(white, #f0f0f082);
 }
 
 #loader-outer {

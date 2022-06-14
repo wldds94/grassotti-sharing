@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import axios from 'axios';
+
 import Panel from './_Panel'
 import { ImNewspaper } from 'react-icons/im'
 import { FiSettings } from 'react-icons/fi'
@@ -12,6 +14,11 @@ export class Accordion extends Component {
     constructor(props) {
         super(props);
 
+        this.api = axios.create({
+            baseURL: wlninja_graxsh_admin_vars.ajax_url
+        })
+
+        this.loadData = this.loadData.bind(this)
         // this.props.panels = [
         //     {
         //         active: true,
@@ -90,7 +97,7 @@ export class Accordion extends Component {
                         return (
                             <div>
                                 <p>EMAIL SETTINGS ON SAVING / PUBLISHING</p>
-                                <FormSettings />
+                                <FormSettings data={this.state.settings} />
                             </div>
                         )
                     },
@@ -117,10 +124,47 @@ export class Accordion extends Component {
                 //         )
                 //     },
                 // },
-            ]
+            ],
+            // settings: {
+            //     send_response: false,
+            //     email_response: '',
+            //     send_content_custom: false,
+            //     email_content_custom: '',
+            // }
+            settings: {
+                send_response: true,
+                email_response: 'test@test.c',
+                send_content_custom: true,
+                email_content_custom: 'Test',
+            }
         };
 
         // this.activateTab = this.activateTab.bind(this);
+    }
+
+    componentDidMount() {
+        this.loadData()
+    }
+
+    loadData() {
+        // console.log('You useEffect...');
+        const formData = new FormData();
+        formData.append("action", 'graxsh_route');
+        formData.append("wlank_graxsh_nonce", wlninja_graxsh_admin_vars.wl_nonce);
+        formData.append("route", 'api/v1/settings/read');
+
+        this.api.post("", formData)
+            .then(res => {
+                const response = res.data;
+                const list = response.response.data; console.log(response.response.data);
+                // this.setState({
+                //     settings: { ...this.state.settings, list }
+                // })
+                // setData(list)
+            })
+            .catch(error => {
+                console.log("Error")
+            })
     }
 
     activateTab(index) {
@@ -152,6 +196,7 @@ export class Accordion extends Component {
                         index={index}
                         {...panel}
                         activateTab={this.activateTab.bind(this)}
+                        onUpdateData={this.loadData}
                     />
                 )}
             </div>

@@ -4,6 +4,7 @@ namespace Graxsh\Api;
 use Graxsh\Base\BaseController;
 
 use Graxsh\Controllers\Post;
+use Graxsh\Controllers\Settings;
 
 /**
  * Pages
@@ -23,6 +24,7 @@ class Router extends BaseController
 
     public function getRoutes(): array {
 		$this->postController = new Post();
+		$this->settingsController = new Settings();
 			
 		$routes = [
             'api/v1/post/save' => [
@@ -41,6 +43,18 @@ class Router extends BaseController
                 'POST' => [
                     'controller' => &$this->postController,
                     'action' => 'deletePost'
+                ]
+			],
+			'api/v1/settings/save' => [
+                'POST' => [
+                    'controller' => &$this->settingsController,
+                    'action' => 'saveSettings'
+                ]
+			],
+			'api/v1/settings/read' => [
+                'POST' => [
+                    'controller' => &$this->settingsController,
+                    'action' => 'getSettings'
                 ]
 			],
 			// 'api/users/remove' => [

@@ -1,6 +1,13 @@
 .settings-form-container {
+    padding: 0.7rem;
+
     input[type=checkbox], input[type=radio] {
         margin: 0;
         margin-left: -1.5rem;
     }
+}
+
+// Custom Library
+.jodit-status-bar .jodit-status-bar__item.jodit-status-bar__item-right:last-child {
+    display: none !important;
 }

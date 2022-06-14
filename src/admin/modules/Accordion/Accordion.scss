@@ -88,7 +88,7 @@ $darGray: #363636; // #6b6968; // #363636
 // }
 
 .panel__inner {
-	overflow: hidden;
+	overflow: auto; // overflow: hidden;
 	will-change: height;
 	transition: height 0.4s cubic-bezier(0.65, 0.05, 0.36, 1);
 }
