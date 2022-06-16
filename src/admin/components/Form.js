@@ -16,6 +16,8 @@ export class Form extends Component {
         const { post } = props
         let stateAux = post ? post : {
             id: '',
+            date: '',
+            location: '',
             name: '',
             email: '',
             title: '',
@@ -77,6 +79,8 @@ export class Form extends Component {
 
         const formData = new FormData();
         formData.append("id", this.state.id);
+        formData.append("date", this.state.date);
+        formData.append("location", this.state.location);
         formData.append("name", this.state.name);
         formData.append("email", this.state.email);
         formData.append("title", this.state.title);
@@ -102,6 +106,8 @@ export class Form extends Component {
                 if (this.isNew) {
                     this.setState({
                         id: '',
+                        date: '',
+                        location: '',
                         name: '',
                         email: '',
                         title: '',
@@ -148,6 +154,14 @@ export class Form extends Component {
                     }
                     <form onSubmit={this.handleSubmit} encType="multipart/form-data" >
                         <input type="hidden" name="id" value={this.state.id} onChange={this.handleChange} className="form-control" id="idImput"/>
+                        <div className="mb-3">
+                            <label htmlFor="dateImput">Date</label>
+                            <input type="date" name="date" value={this.state.date} onChange={this.handleChange} className="form-control" id="dateImput" placeholder="" />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="locationImput">Location</label>
+                            <input type="text" name="location" value={this.state.location} onChange={this.handleChange} className="form-control" id="locationImput" placeholder="Genova" />
+                        </div>
                         <div className="mb-3">
                             <label htmlFor="nameImput">Name</label>
                             <input type="text" name="name" value={this.state.name} onChange={this.handleChange} className="form-control" id="nameImput" placeholder="Name" />

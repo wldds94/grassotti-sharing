@@ -15,6 +15,33 @@ code {
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
+// SCROLLING
+html {
+  scroll-behavior: smooth;
+}
+
+/* Works on Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #9b9b9b transparent;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 8px; // 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #9b9b9b ;
+  border-radius: 20px;
+  border: 1px solid #fdfdfd; // border: 1px solid transparent; // 3px solid transparent;
+}
+
+// COMMON SECTION
 #graxsh-admin-root {
     margin: 0;
     padding:0;

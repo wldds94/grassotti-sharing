@@ -36,6 +36,8 @@ class Post extends BaseController {
             $post_id = sanitize_text_field( $_POST['id'] );
 		}
 
+        $date = sanitize_text_field( $_POST['date'] );
+        $location = sanitize_text_field( $_POST['location'] );
         $name = sanitize_text_field( $_POST['name'] );
         $email = sanitize_text_field( $_POST['email'] );
         $title = sanitize_text_field( $_POST['title'] );
@@ -75,8 +77,10 @@ class Post extends BaseController {
         }
 
         $story_user_meta = array(
+            'date' => $date,
+            'location' => $location,
             'name' => $name,
-            'email' => $email
+            'email' => $email,
         );
         // Save metadata name and username
         update_post_meta($story_post_id, $this->cpt_slug_user_meta, $story_user_meta);
@@ -354,6 +358,8 @@ class Post extends BaseController {
 
         // User Meta
         $story_user_meta = get_post_meta($aux->ID, $this->cpt_slug_user_meta, true);
+        $aux->date = isset($story_user_meta['date']) ? $story_user_meta['date'] : '';
+        $aux->location = isset($story_user_meta['location']) ? $story_user_meta['location'] : '';
         $aux->name = isset($story_user_meta['name']) ? $story_user_meta['name'] : '';
         $aux->email = isset($story_user_meta['email']) ? $story_user_meta['email'] : '';
 

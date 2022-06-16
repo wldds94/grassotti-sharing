@@ -28,9 +28,11 @@ const PostTable = (props) => {
 
     const columns = [
         { title: "ID", field: "ID", /* editable: false hidden: true, */ },
+        { title: "Date", field: "date" },
         { title: "Name", field: "name" },
         { title: "Email", field: "email" },
         { title: "Title", field: 'post_title', },
+        { title: "Location", field: "location" },
         {
             title: "Status", field: 'post_status', align: 'center', lookup: {
                 draft: <BsFillShieldLockFill />,
@@ -52,21 +54,6 @@ const PostTable = (props) => {
     const [errorMessages, setErrorMessages] = useState([])
 
     useEffect(() => {
-        // console.log('You useEffect...');
-        // const formData = new FormData();
-        // formData.append("action", 'graxsh_route');
-        // formData.append("wlank_graxsh_nonce", wlninja_graxsh_admin_vars.wl_nonce);
-        // formData.append("route", 'api/v1/post/list');
-
-        // api.post("", formData)
-        //     .then(res => {
-        //         const response = res.data;
-        //         const list = response.response.data; console.log(response.response.data);
-        //         setData(list)
-        //     })
-        //     .catch(error => {
-        //         console.log("Error")
-        //     })
         loadData()
     }, [])
 
@@ -93,26 +80,26 @@ const PostTable = (props) => {
             })
     }
 
-    const handleRowUpdate = (newData, oldData, resolve) => {
-        setData([]);
-        resolve()
-    }
+    // const handleRowUpdate = (newData, oldData, resolve) => {
+    //     setData([]);
+    //     resolve()
+    // }
 
-    const handleRowAdd = (newData, resolve) => {
-        //validation
-        let errorList = []
-        if (newData.first_name === undefined) {
-            errorList.push("Please enter first name")
-        }
+    // const handleRowAdd = (newData, resolve) => {
+    //     //validation
+    //     let errorList = []
+    //     if (newData.first_name === undefined) {
+    //         errorList.push("Please enter first name")
+    //     }
 
-        if (errorList.length < 1) { //no error
-            console.log('Sending');
-        } else {
-            setErrorMessages(errorList)
-            setIserror(true)
-            resolve()
-        }
-    }
+    //     if (errorList.length < 1) { //no error
+    //         console.log('Sending');
+    //     } else {
+    //         setErrorMessages(errorList)
+    //         setIserror(true)
+    //         resolve()
+    //     }
+    // }
 
     const handleRowDelete = (oldData) => {
         // console.log(oldData);
@@ -142,6 +129,8 @@ const PostTable = (props) => {
         onOpenModal(rowData.ID, () => {
             const post = {
                 id: rowData.ID,
+                date: rowData.date,
+                location: rowData.location,
                 name: rowData.name,
                 email: rowData.email,
                 title: rowData.post_title,
@@ -157,13 +146,6 @@ const PostTable = (props) => {
     
                     const FileBlob = new File([u8arr], value.post_title, { type: mime, });
                     return FileBlob
-                    // var temp = {
-                    //     [value.post_title]: new File([value.blob], value.post_title)
-                    // }
-                    // return temp
-                    // var temp = Object.assign({}, value); // console.log(temp, temp.key);
-                    // return temp;
-                    // return new File([value.blob], value.post_title, { type: value.post_mime_type, })
                 }),
             }
             // console.log('Post Files: ', post.files);

@@ -17,7 +17,7 @@ import {
     InputLabel
 } from "./Uploader.styles";
 
-const DEFAULT_MAX_FILE_SIZE_IN_BYTES = 500000;
+const DEFAULT_MAX_FILE_SIZE_IN_BYTES = 2000000;
 const KILO_BYTES_PER_BYTE = 1000;
 
 const convertNestedObjectToArray = (nestedObj) =>
