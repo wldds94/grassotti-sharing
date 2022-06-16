@@ -21,6 +21,7 @@ final class Init
 			Base\Notice::class,
 			Base\AjaxRouting::class,
             Core\Pages::class,
+			Core\Shortcode::class,
 			// Core\Router::class,
 		// 	Core\CustomPostType::class,
 		// 	Core\PopUp::class,

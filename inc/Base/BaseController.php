@@ -24,16 +24,16 @@ class BaseController
 
 	public $valid_pages;
 
+	/**
+	 * Admin Pages
+	 */
+	public $admin_slug_index;
+
     /**
      * The folder to Upload the images by stories
      */
     public $upload_folder_path;
 	public $upload_url_path;
-
-	/**
-	 * Admin Pages
-	 */
-	public $admin_slug_index;
 
 	/**
 	 * Ajax Aux
@@ -45,6 +45,7 @@ class BaseController
 	 * Custom Post Type
 	 */
 	public $cpt_slug;
+	public $cpt_attachments_slug;
 
 	/**
 	 * Settings
@@ -85,6 +86,10 @@ class BaseController
 
 		// Active Public Services
 		$this->active_public_option_name = 'graxsh_public_services_option';
+
+		// Shortcodes names
+		$this->graxsh_react_template_name = 'graxsh_react_template';
+		$this->graxsh_html_template_name = 'graxsh_html_template';
     }
 
 	/**
@@ -100,4 +105,14 @@ class BaseController
 
 	}
 
+	/**
+	 * Check if have to activate public class services
+	 * @since    1.0.0
+	 * 
+	 * @return   bool
+	 */
+	public function isActivePublic()
+	{
+		return get_option($this->active_public_option_name, false) ?: false;
+	}
 }

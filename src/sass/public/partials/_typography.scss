@@ -1,0 +1,105 @@
+// @include font('Salermoni-J', './../../../../wlank_theme/assets/fonts/Raleway/static/Raleway-Regular');
+@include font('Salermoni-J', './../../../../plugins/grassotti-sharing/dist/fonts/salernomi_j');
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: $base-font;
+	margin: 0;
+	padding: 0;
+}
+
+body, p, a, span, div, .graxsh-body {
+	margin: 0;
+	padding: 0;
+	font-family: $body-font;
+	font-weight: 300;
+
+	@include font-size($base-fs, $base-fs * 1.05, 0.5px);
+
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+// Headings
+h1,
+.h1 {
+	@include font-size(40px);
+
+	@media (max-width: #{$sm}) {
+		@include font-size(26px);
+	}
+}
+
+h2,
+.h2 {
+	@include font-size(26px, 27px, 0/* 0.36px */);
+
+	@media (max-width: #{$sm}) {
+		@include font-size(20px, 21px, 0/* 0.36px */);
+	}
+}
+
+h3,
+.h3 {
+	@include font-size(22px, 23px, 0/* 0.3px */);
+
+	@media (max-width: #{$sm}) {
+		@include font-size(18px, 19px, 0/* 0.3px */);
+	}
+}
+
+h4,
+.h4 {
+	@include font-size(20px, 0/* 0.26px */);
+
+	@media (max-width: #{$sm}) {
+		@include font-size(15px, 16px);
+	}
+}
+
+h5,
+.h5 {
+	@include font-size(18px);
+
+	@media (max-width: #{$sm}) {
+		@include font-size(15px);
+	}
+}
+
+small,
+.small {
+	@include font-size(15px, 16px, 0/* 0.28px */);
+}
+
+// alignments
+.text-center {
+	text-align: center;
+}
+
+.text-right {
+	text-align: right;
+}
+
+.text-left {
+	text-align: left;
+}
+
+// Modifiers
+.text-normal {
+	font-weight: 400;
+}
+
+.text-semibold {
+	font-weight: 600;
+}
+
+.text-bold {
+	font-weight: 700;
+}
+
+.text-uppercase {
+	text-transform: uppercase;
+}
+
+.no-line-height {
+	line-height: 1em !important;
+}

@@ -35,6 +35,10 @@ class Settings extends BaseController {
             'email_content_custom' => $resp_content,
         );
         update_option( $this->settings_option_name, $option );
+
+        // Update Activation Options
+        update_option( $this->active_public_option_name, $active_public );
+
         $settings = get_option($this->settings_option_name, false) ?: array();
 
         return array(

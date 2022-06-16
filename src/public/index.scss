@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&display=swap');
+
+// SCROLLING
+html {
+    scroll-behavior: smooth;
+}
+
+#graxsh-public-posts-root {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+}
+
+/*--------------------------------------------------------------
+# Base
+--------------------------------------------------------------*/
+@import './scss/base/variables';
+@import './scss/base/mixins';
+@import './scss/base/fonts';
+@import './scss/base/fonticons';
+@import './scss/base/animations';
+@import './scss/base/body';
+@import './scss/base/containers';
+@import './scss/base/grid';
+@import './scss/base/spacing';
+@import './scss/base/wordpress';
+@import './scss/base/forms';
+@import './scss/base/placeholders';
+
+/*--------------------------------------------------------------
+# Partials
+--------------------------------------------------------------*/
+@import 'partials/typography';
+@import 'partials/buttons';
+@import 'partials/links';
+@import 'partials/colours';
+@import 'partials/helpers';
+@import 'partials/media';
+
+/*--------------------------------------------------------------
+# Components
+--------------------------------------------------------------*/
+@import 'components/Form';
+@import 'components/Posts';
+
+
+

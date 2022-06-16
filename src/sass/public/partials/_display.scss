@@ -1,0 +1,19 @@
+.flex {
+    display: flex;
+
+    &.fl-row {
+        flex-direction: row;
+    }
+
+    &.fl-col {
+        flex-direction: column;
+    }
+}
+
+.grid {
+    display: grid;
+}
+
+.block {
+    display: block;
+}

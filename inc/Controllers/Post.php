@@ -42,7 +42,7 @@ class Post extends BaseController {
         $email = sanitize_text_field( $_POST['email'] );
         $title = sanitize_text_field( $_POST['title'] );
 		$message = htmlentities( wpautop($_POST['message']) );
-        $status = isset($_POST['status']) ? (absint( sanitize_text_field( $_POST['status'] ) ) === 1 ? 'publish' : 'draft') : 'draft';
+        $status = sanitize_text_field( $_POST['status'] ); // isset($_POST['status']) ? (absint( sanitize_text_field( $_POST['status'] ) ) === 1 ? 'publish' : 'draft') : 'draft';
 
         if ('' !== $post_id) {
             $story_post = array(

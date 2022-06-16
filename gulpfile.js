@@ -23,22 +23,22 @@ var gulpif       = require( 'gulp-if' );
 // // Browers related plugins
 var browserSync  = require( 'browser-sync' ).create();
 
-var styleSRC     = './src/sass/style.scss';
+var styleSRC     = './src/sass/public/public.scss';
 // var stylePublic   = './src/sass/public.scss';
 var styleURL     = './dist/css/';
 var mapURL       = './';
 
-var jsSRC        = 'src/js/';
-var jsAdmin      = 'admin.js';
-// var jsApp        = 'app.js';
-// Public
-var jsPublic      = 'public.js';
-var jsFiles      = [jsPublic];
-var jsURL        = './dist/js/';
+// var jsSRC        = 'src/js/';
+// var jsAdmin      = 'admin.js';
+// // var jsApp        = 'app.js';
+// // Public
+// var jsPublic      = 'public.js';
+// var jsFiles      = [jsPublic];
+// var jsURL        = './dist/js/';
 
 var styleWatch   = 'src/sass/**/*.scss';
-var jsWatch      = 'src/js/**/*.js';
-var phpWatch     = './**/*.php';
+// var jsWatch      = 'src/js/**/*.js';
+// var phpWatch     = './**/*.php';
 
 function css(done) {
 	src([styleSRC], {"allowEmpty": true})
@@ -58,33 +58,34 @@ function css(done) {
 	done();
 }
 
-function js(done) {
-	jsFiles.map(function (entry) {
-		return browserify({
-			entries: [jsSRC + entry]
-		})
-		.transform( babelify, { presets: [ '@babel/preset-env' ] } )
-		.bundle()
-		.pipe( source( entry ) )
-		.pipe( buffer() )
-		.pipe( gulpif( options.has( 'production' ), stripDebug() ) )
-		.pipe( sourcemaps.init({ loadMaps: true }) )
-		.pipe( uglify() )
-		.pipe( sourcemaps.write( '.' ) )
-		.pipe( dest( jsURL ) )
-		.pipe( browserSync.stream() );
-	});
-	done();
-}
+// function js(done) {
+// 	jsFiles.map(function (entry) {
+// 		return browserify({
+// 			entries: [jsSRC + entry]
+// 		})
+// 		.transform( babelify, { presets: [ '@babel/preset-env' ] } )
+// 		.bundle()
+// 		.pipe( source( entry ) )
+// 		.pipe( buffer() )
+// 		.pipe( gulpif( options.has( 'production' ), stripDebug() ) )
+// 		.pipe( sourcemaps.init({ loadMaps: true }) )
+// 		.pipe( uglify() )
+// 		.pipe( sourcemaps.write( '.' ) )
+// 		.pipe( dest( jsURL ) )
+// 		.pipe( browserSync.stream() );
+// 	});
+// 	done();
+// }
 
 function watch_files() {
 	watch( styleWatch, css );
-	watch( jsWatch, js );
-	src( jsURL + 'public.js' )
-		.pipe( notify({ message: 'Gulp is Watching, Happy Coding!' }) );
+	// watch( jsWatch, js );
+	// src( jsURL + 'public.js' )
+	// 	.pipe( notify({ message: 'Gulp is Watching, Happy Coding!' }) );
 };
 
 task("css", css);
-task("js", js);
-task("default", series(css, js));
+// task("js", js);
+// task("default", series(css, js));
+task("default", series(css));
 task("watch", watch_files);

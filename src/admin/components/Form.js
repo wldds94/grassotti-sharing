@@ -113,6 +113,7 @@ export class Form extends Component {
                         title: '',
                         message: '',
                         files: [],
+                        status: '',
                     });
                 }
                 
@@ -196,11 +197,11 @@ export class Form extends Component {
                             <div className="radio-container">
                                 <span>
                                     <label htmlFor="statusImput0">Bozza</label>
-                                    <input type="radio" name="status" value='0' onChange={this.handleChange} className="form-control" id="statusImput0" />
+                                    <input type="radio" name="status" value='draft' onChange={this.handleChange} className="form-control" id="statusImput0" checked={this.state.status === 'draft' ? true : false} />
                                 </span>
                                 <span>
                                     <label htmlFor="statusImput1">Publish</label>
-                                    <input type="radio" name="status" value='1' onChange={this.handleChange} className="form-control" id="statusImput1" />
+                                    <input type="radio" name="status" value='publish' onChange={this.handleChange} className="form-control" id="statusImput1" checked={this.state.status === 'publish' ? true : false} />
                                 </span>
                             </div>
                         </div>
