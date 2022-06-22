@@ -68,3 +68,17 @@
 	display: inline-block;
 	visibility: visible;
 }
+
+.mobile {
+	display: none !important;
+}
+
+@media screen and (max-width: $md) {
+	.desk {
+		display: none !important;
+	}
+
+	.mobile {
+		display: block !important;
+	}
+}

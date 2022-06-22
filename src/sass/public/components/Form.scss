@@ -1,3 +1,176 @@
 .graxsh-form-container {
+    background: linear-gradient(90deg, $primaryColorDark 0%, $secondaryColor 98.87%, $secondaryColorVariant 163.65%);
+    color: $white;
+    padding-right: 3.5rem;
+    // padding: 5rem 3rem 5rem;
+
+    .form-scroll-container {
+        padding: 0 6rem 0 3rem;
+        // padding: 4rem 6rem 4rem 3rem; // padding: 5rem 6rem 5rem 3rem; // padding: 5rem 3rem 5rem;
+
+        .form-container {
+            grid-template-columns: 25% 25% 25% 30% 50% 40%; //  repeat(6, 30%); //  25% 25% 25% 25% 25%;
+            // max-width: calc(100% - 6rem);
+
+            &>div {
+                padding: 3.5rem 0 3.5rem 0;
+                display: grid;
+                grid-template-columns: auto 1fr;
+                gap: .3rem;
+
+                &.form-files {
+                    grid-template-columns: 1fr;
+                    padding: 1.5rem 0 1.5rem 0;
+
+                    .input-container {
+                        display: flex;
+                        gap: 0.8rem;
+                    }
+                }
+
+                &.form-privacy {
+                    grid-template-columns: 1fr;
+                    padding: 2.5rem 0 2.5rem 0;
+
+                    .latin-number {
+                        z-index: 1;
+
+                        .placeholder {
+                            padding: 0 0.2rem;
+                            // z-index: 1;
+
+                            &::after {
+                                content: "";
+                                position: absolute;
+                                left: 0;
+                                bottom: 0;
+                                width: 100%;
+                                height: 15px;
+                                background: #DEB982;
+                                z-index: -1;
+                                // z-index: 0;
+                            }
+                        }
+                    }
+
+                    .input-container {
+                        display: flex;
+                        gap: 0.5rem;
+                        max-width: calc(100% - 2.7rem);
+
+                    }
+                }
+
+                .latin-number {
+                    font-size: 46px;
+                    font-weight: 700;
+                    line-height: 46px;
+
+                    &>span {
+                        font-size: 26px;
+                        font-weight: 400;
+                        line-height: 26px;
+                        letter-spacing: 0;
+                    }
+                }
+
+                input {
+                    background: transparent;
+                    border: none;
+                    position: relative;
+                    // border-bottom: 2px solid $white;
+                    font-size: 26px;
+                    line-height: 26px;
+                    padding: 0;
+                    color: $white;
+                    font-weight: 400;
+
+                    &::placeholder {
+                        color: $white;
+                        font-weight: 400;
+                        text-decoration: underline;
+                    }
+
+                    &:focus {
+                        border: none;
+                        outline: 0;
+                    }
+
+                    &[type=checkbox] {
+                        border: 1px solid $white;
+                        border-radius: 0;
+                        background: transparent;
+                    }
+                }
+            }
+        }
+    }
+
+    .graxsh-public-submit {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: calc(100% - 1px); // height: 100%;
+        width: 6rem;
+        background: $primaryColor;
+        // text-align: center;
+        // padding: 5rem 6rem 5rem 3rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        z-index: 9;
+
+        svg {
+            font-size: 40px;
+        }
+    }
+}
+
+/** ----------------------------------------- **/
+/** =============== REESPONSIVE ============== **/
+/** ------ MEDIA QUERIES ------ **/
+// MEDIUM LARGE - 1024px
+@media screen and (max-width: $xl) {
+    .graxsh-form-container {    
+        .form-scroll-container {
+            // padding: 0 6rem 0 3rem;
     
+            .form-container {
+                grid-template-columns: 40% 40% 40% 45% 65% 50%;
+                // grid-template-columns: repeat(6, 50%); 
+            }
+        }
+    }
+}
+
+/** ------ MEDIA QUERIES ------ **/
+// SMALL
+@media screen and (max-width: $sm) {
+    .graxsh-form-container {    
+        .form-scroll-container {
+            // padding: 0 6rem 0 3rem;
+    
+            .form-container {
+                display: flex;
+                width: max-content;
+                flex-wrap: nowrap;
+                // grid-template-columns:repeat(6, minmax(auto, max-content));
+                // grid-template-columns: repeat(6, 50%); 
+
+                & > div {
+                    padding: 3.5rem 2.7rem 3.5rem;
+
+                    &.form-files {
+                        padding: 1.5rem 2.7rem 1.5rem;
+                    }
+
+                    &.form-privacy {
+                        padding: 2.5rem 2.7rem 2.5rem;
+                        max-width: 500px;
+                    }
+                }
+            }
+        }
+    }
 }

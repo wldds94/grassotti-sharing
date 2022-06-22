@@ -18,6 +18,7 @@ $margins: ('mt': 'margin-top', 'mr': 'margin-right', 'mb': 'margin-bottom', 'ml'
 $xs: 480px;
 $sm: 600px;
 $md: 800px;
+$ml: 1024px;
 $lg: 1190px;
 $xl: 1440px;
 $xxl: 1700px;
@@ -39,7 +40,9 @@ $lighter-grey: #f1f1f1;
 // COLORS
 $blackColor: #000000;
 $whiteColor: #fff;
+$primaryColorDark: #B35539;
 $primaryColor: #B35539;
+$primaryColorLight: #D93B41;
 $primaryColorVariant: #C04F34;
 $primaryColorVariantSecond: #ED6363;
 $secondaryColor: #DBB580;
@@ -47,7 +50,7 @@ $secondaryColorVariant: #EDDEB7;
 
 
 // custom colours
-$colours: ('white': $white, 'black': $black, 'light-grey': $light-grey, 'red': $primaryColorVariantSecond);
+$colours: ('white': $white, 'black': $black, 'light-grey': $light-grey, 'red': $primaryColorVariantSecond, 'sec-col-var': $secondaryColorVariant,);
 
 /*-------------------------
 *  Typography - FONTS
