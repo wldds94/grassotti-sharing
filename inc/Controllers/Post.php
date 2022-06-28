@@ -390,4 +390,187 @@ class Post extends BaseController {
 
         return $aux;
     }
+
+
+    /** PUBLIC **/
+    public function savePostPublic()
+    {
+        $res_array = array();
+		if ( !isset( $_POST ) || empty($_POST) || !is_user_logged_in() || !wp_verify_nonce( $_POST['wlank_graxsh_nonce'], $this->admin_graxsh_nonce ) ) {
+			header( 'HTTP/1.1 400 Empty POST Values' );
+			$res_array['error'] = 'error - Could not verify POST values';
+			return json_encode($res_array);
+			exit;
+		}
+
+        if(!isset($_POST['title']) || !isset($_POST['email']) || !isset($_POST['title']) || !isset($_POST['message'])) {
+            $res_array['error'] = 'error - Could not verify POST values';
+			return json_encode($res_array);
+			exit;
+		}
+
+        if(!isset($_FILES['files']) ) {
+            $res_array['error'] = 'error - Could not verify FILES values';
+			return json_encode($res_array);
+			exit;
+		}
+
+        $post_id = '';
+        if(isset($_POST['id'])) {
+            $post_id = sanitize_text_field( $_POST['id'] );
+		}
+
+        $date = sanitize_text_field( $_POST['date'] );
+        $location = sanitize_text_field( $_POST['location'] );
+        $name = sanitize_text_field( $_POST['name'] );
+        $email = sanitize_text_field( $_POST['email'] );
+        $title = sanitize_text_field( $_POST['title'] );
+		$message = htmlentities( wpautop($_POST['message']) );
+        $status = sanitize_text_field( $_POST['status'] ); // isset($_POST['status']) ? (absint( sanitize_text_field( $_POST['status'] ) ) === 1 ? 'publish' : 'draft') : 'draft';
+
+        if ('' !== $post_id) {
+            $story_post = array(
+                'ID'           => $post_id,
+                'post_title'     => $title,
+                'post_content'   => $message,
+                'post_status'    => $status,
+                // 'guid'           => $wlpsa_dir_url . '/' . basename( $filename ),
+                'post_type'      => $this->cpt_slug,
+            );
+            $story_post_id = wp_update_post($story_post); // wp_insert_post( $story_post );
+
+            // Delete all childs post
+            $this->deleteChildsByPost($post_id);
+            $path = $this->upload_folder_path . '/' . $post_id;
+            $this->recursiveDelete($path);
+        } else {
+            $story_post = array(
+                'post_title'     => $title,
+                'post_content'   => $message,
+                'post_status'    => $status,
+                // 'guid'           => $wlpsa_dir_url . '/' . basename( $filename ),
+                'post_type'      => $this->cpt_slug,
+            );
+            $story_post_id = wp_insert_post( $story_post );
+        }
+        
+        if (is_wp_error( $story_post_id)) {
+            $res_array['error'] = 'error - Could not insert stories Post';
+			return json_encode($res_array);
+			exit;
+        }
+
+        $story_user_meta = array(
+            'date' => $date,
+            'location' => $location,
+            'name' => $name,
+            'email' => $email,
+        );
+        // Save metadata name and username
+        update_post_meta($story_post_id, $this->cpt_slug_user_meta, $story_user_meta);
+
+        // return json_encode( $story_post_id );
+        // Process File
+        $hasfiles = count($_FILES['files']);
+        if ($hasfiles) {
+            $filesCount = count($_FILES['files']['name']);
+
+            if ($filesCount) {
+                // return rest_ensure_response( 'API works' );
+                for($i=0; $i < $filesCount; $i++) {
+                    $file_name = $_FILES['files']['name'][$i];
+                    $file_size = $_FILES['files']['size'][$i];
+                    $file_tmp = $_FILES['files']['tmp_name'][$i];
+                    $file_type = sanitize_text_field($_FILES['files']['type'][$i]);
+                    $file_mime_type = count(explode('/', $file_type)) > 0 ? explode('/', $file_type) : 'undefined';
+                    // file extension
+                    $file_ext_expl = explode('.', $file_name);
+                    $file_ext = sanitize_text_field( strtolower( end($file_ext_expl) ) );
+
+                    // Valid file extensions
+                    $extensions = array("txt","pdf","jpeg","png","jpg","svg","ods","odt","xlsx","xls","docx","doc","zip");
+
+                    if(in_array($file_ext,$extensions) === false){
+                        $res_array['error'] = 'error - Extension not allowed';
+                        // return json_encode($res_array);
+                        // exit;
+                        continue;
+                    } else {
+                        $filename = 'file_' . $story_post_id . '_doc_'.time().'.'.$file_ext;
+                        // $mime_type = $file_type . '/' . $file_ext;
+                        $story_post_attachment = array(
+                            'post_mime_type' => $file_mime_type[0] . '/' . $file_ext,
+                            'post_title'     => $filename,
+                            'post_content'   => '',
+                            'post_status'    => 'inherit',
+                            'guid'           => $this->upload_folder_path . '/' . $story_post_id . '/' . $story_post_attach_id . '/' . basename( $filename ),
+                            'post_type'      => $this->cpt_attachments_slug,
+                            'post_parent'    => $story_post_id,
+                        );
+                        $story_post_attach_id = wp_insert_post( $story_post_attachment );
+                        if(is_wp_error($story_post_attach_id)){
+                            $post_id_error = $story_post_attach_id->get_error_message();
+                            $res_array['error'] = 'error - ' . $post_id_error;
+                            // return json_encode($res_array);
+                            // exit;
+                            continue;
+                        }
+
+                        $wlpsa_dir_path = $this->upload_folder_path . '/' . $story_post_id . '/' . $story_post_attach_id;
+                        $created_dir = wp_mkdir_p($wlpsa_dir_path);
+                        if(!$created_dir){
+                            // Remove the post ?? TO DO
+                            $res_array['error'] = 'error - Plugin was unable to create directory';
+                            // return json_encode($res_array);
+                            // exit;
+                            continue;
+                        }
+
+                        // -----------------
+                        $upload_path = str_replace( '/', DIRECTORY_SEPARATOR, $wlpsa_dir_path ) . DIRECTORY_SEPARATOR;
+                        $upload_file = move_uploaded_file($file_tmp, $upload_path . $filename);
+
+                        if($upload_file){
+                            
+                            $wlpsa_attach_data = wp_generate_attachment_metadata( $story_post_attach_id, $wlpsa_dir_path . '/' . $filename);
+                            wp_update_attachment_metadata( $story_post_attach_id, $wlpsa_attach_data );
+
+                            if ( is_wp_error( $wlpsa_attach_data ) ) {
+                                $res_array['error'] = "Error generating the details for your document! Please try later or contact us";
+                            } else {
+                                $story_post_attach_meta = array();
+
+                                $story_post_attach_meta['url'] = $this->upload_url_path . '/' . $story_post_id . '/' . $story_post_attach_id . '/' . $filename;
+
+                                $blob_path = $this->upload_folder_path . '/' . $story_post_id . '/' . $story_post_attach_id . '/' . $filename;
+                                $blob = 'data:' . $story_post_attachment['post_mime_type'] . ';base64,' . base64_encode(fread(fopen($blob_path, "r"), filesize($blob_path)));
+                                $story_post_attach_meta['blob'] = $blob;
+                                $story_post_attach_meta['size'] = $file_size;
+                                $doc_file_time = filemtime(  $upload_path . $filename );
+                                $story_post_attach_meta['edited'] = date( "M j Y g:i A", $doc_file_time );
+
+                                update_post_meta($story_post_attach_id, $this->cpt_attachments_meta_name, $story_post_attach_meta);
+                            }
+                        } else{
+                            // return $res_array['error'] = __("Error uploading the photo! Please try later.", "user-private-files");
+                            // exit;
+                            continue;
+                        }
+                        // return array(
+                        //     'control' => true,
+                        //     'message' => 'File Uploaded!!',
+                        // );
+
+                        // exit;
+                    }
+                }
+
+                return array(
+                    'control' => true,
+                    'message' => 'File Uploaded!!',
+                );
+            }
+        }
+
+    }
 }

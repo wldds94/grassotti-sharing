@@ -1,3 +1,83 @@
+.file-wrapper-container {
+    .files-preview-container {
+        // margin-bottom: 35px;
+
+        span {
+            font-size: 10px;
+        }
+
+        .files-list {
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            // margin-top: 10px;
+            gap: 5px;
+
+            @media only screen and (max-width: 400px) {
+                flex-direction: column;
+            }
+
+            .preview-content {
+                position: relative;
+                display: "flex";
+                flex-direction: column;
+                // position: absolute;
+                // top: 0;
+                // left: 0;
+                // right: 0;
+                // bottom: 0;
+                padding: 4px;
+                border-radius: 6px;
+                color: white;
+                font-weight: bold;
+                // background-color: rgba(5, 5, 5, 0.55);
+                width: 70px;
+                height: 60px;
+                overflow: hidden;
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: center;
+
+                // img {
+                //     height: auto;
+                //     max-width: 100%;
+                //     object-fit: cover;
+                //     // object-position: center;
+                // }
+
+                .preview-meta {
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    right: 0;
+                    left: 0;
+                    padding: 0.2rem;
+                    background-color: rgba(5, 5, 5, 0.55);
+
+                    display: flex;
+                    flex-direction: column;
+
+                    i {
+                        cursor: pointer;
+                        transition: all 180ms ease-in;
+
+                        &:hover {
+                            transform: scale(1.2);
+                        }
+                    }
+                }
+
+                aside {
+                    margin-top: auto;
+                    display: flex;
+                    justify-content: space-between;
+                }
+            }
+        }
+    }
+}
+
+
 .file-input__input {
     width: 0.1px;
     height: 0.1px;
@@ -22,6 +102,7 @@
     box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
     height: 55px;
     width: 55px;
+    margin-left: 20px;
 }
 
 .file-input__label svg {

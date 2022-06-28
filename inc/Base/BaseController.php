@@ -72,6 +72,7 @@ class BaseController
 
 		// NONCE
 		$this->admin_graxsh_nonce = 'wlank_graxsh_validate_nonce';
+		$this->public_graxsh_nonce = 'wlank_graxsh_post_nonce';
 
 		// Story Post
 		$this->cpt_slug = 'graxsh_story';

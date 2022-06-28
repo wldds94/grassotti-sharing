@@ -11,13 +11,10 @@ export class Form extends Component {
         this.state = {
             name: '',
             email: '',
+            location: '',
             title: '',
             message: '',
-            files: [
-                {},
-                {},
-                {},
-            ],
+            files: [],
             privacy: false,
         }
 
@@ -40,6 +37,11 @@ export class Form extends Component {
         // console.log('Change detected. State updated' + name + ' = ' + value);
     }
 
+    handleFiles(files) {
+        /* const target = event.target // const { files } = event.target // const files = target.files // Array.from(target[0].files) */ // console.log(files);
+        this.setState({ files: files })
+    }
+
     // acceptPrivacy(e) {
     //     const target = e.target.checked
     //     this.setState({
@@ -51,6 +53,31 @@ export class Form extends Component {
         e.preventDefault()
         e.stopPropagation()
         console.log('You Try to handler Submit...');
+
+        const formData = new FormData();
+        formData.append("name", this.state.name);
+        formData.append("email", this.state.email);
+        formData.append("location", this.state.location);
+        formData.append("title", this.state.title);
+        formData.append("message", this.state.message);
+        Array.from(this.state.files).map((value, index) => {
+            formData.append("files[" + index + "]", value);
+        })
+        formData.append("privacy", this.state.privacy);
+
+        formData.append("action", 'graxsh_pb_route');
+        formData.append("wlank_graxsh_pb_nonce", wlninja_graxsh_public_vars.wl_nonce);
+        formData.append("route", 'api/v1/priv/post/save');
+
+        this.setState({
+            name: '',
+            email: '',
+            location: '',
+            title: '',
+            message: '',
+            files: [],
+            privacy: false,
+        });
     }
 
     onClick(event) {
@@ -99,29 +126,40 @@ export class Form extends Component {
                                             placeholder='LA TUA EMAIL' />
                                     </div>
                                 </div>
+                                <div>
+                                    <label htmlFor="location" className='latin-number'>3.</label>
+                                    <div className='input-container'>
+                                        <input value={this.state.location} onChange={this.handleChange} type="text" name="location" className="form-control" id="location" aria-describedby="locationHelp"
+                                            placeholder='LUOGO' />
+                                    </div>
+                                </div>
                                 {/* </div> */}
                                 <div>
-                                    <label htmlFor="title" className='latin-number'>3.</label>
+                                    <label htmlFor="title" className='latin-number'>4.</label>
                                     <div className='input-container'>
                                         <input value={this.state.title} onChange={this.handleChange} type="email" name="title" className="form-control" id="title" aria-describedby="titleHelp"
                                             placeholder='TITOLO DEL POST' />
                                     </div>
                                 </div>
                                 <div>
-                                    <label htmlFor="message" className='latin-number'>4.</label>
+                                    <label htmlFor="message" className='latin-number'>5.</label>
                                     <div className='input-container'>
                                         <input value={this.state.message} onChange={this.handleChange} type="email" name="message" className="form-control" id="message" aria-describedby="messageHelp"
                                             placeholder='TESTO DEL MESSAGGIO' />
                                     </div>
                                 </div>
                                 <div className='form-files'>
-                                    <label className='latin-number'>5. <span>CARICA LE TUE IMMAGINI <small>( min.1 max 3 )</small></span></label>
+                                    <label className='latin-number'>6. <span>CARICA LE TUE IMMAGINI <small>( min.1 max 3 )</small></span></label>
                                     <div className='input-container'>
-                                        {this.state.files.map((file, key) => {
+                                        {/* {this.state.files.map((file, key) => {
                                             return (
-                                                <InputFiles key={key} />
+                                                <InputFiles key={key} file={file} />
                                             )
-                                        })}
+                                        })} */}
+                                        <InputFiles
+                                            files={this.state.files}
+                                            onLoading={this.handleFiles.bind(this)}
+                                        />
                                     </div>
                                 </div>
                                 <div className='form-privacy'>
@@ -146,6 +184,27 @@ export class Form extends Component {
             </React.Fragment>
         )
     }
+
+        // componentDidMount() {
+    //     if ("geolocation" in navigator) {
+    //         console.log("geolocation Available");
+
+    //         navigator.geolocation.getCurrentPosition(
+    //         function (position) {
+    //             // console.log('Geolocation Function');
+    //             console.log("Latitude is :", position.coords.latitude);
+    //             console.log("Longitude is :", position.coords.longitude);
+    //         },
+    //         function errorCallback(error) {
+    //             console.log(error);
+    //         },
+    //         {
+    //             timeout:1000
+    //         },);
+    //     } else {
+    //         console.log("geolocation Not Available");
+    //     }
+    // }
 }
 
 export default Form
