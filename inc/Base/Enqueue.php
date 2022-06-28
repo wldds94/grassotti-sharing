@@ -68,7 +68,7 @@ class Enqueue extends BaseController
 		wp_localize_script( 'wlninja_graxsh_public_script', 'wlninja_graxsh_public_vars', array(
                 'author'      => 'Walter Laidelli',
                 'site_url'    => $this->site_url,
-                // 'ajax_url'    => admin_url( 'admin-ajax.php' ),
+                'ajax_url'    => admin_url( 'admin-ajax.php' ),
                 'graxsh_plugin_url' => $this->plugin_url,
                 'wl_nonce'    => wp_create_nonce( $this->public_graxsh_nonce ), // wp_nonce_field( 'ajax-wlninja-nonce', 'wlninja_validate_button' )
             ) 

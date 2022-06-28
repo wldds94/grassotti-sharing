@@ -1,8 +1,13 @@
 import React, { Component, createRef, useRef } from 'react';
+import axios from 'axios';
 // import './Form.scss';
 import ScrollContainer from 'react-indiana-drag-scroll'
 import { BsArrowRight } from 'react-icons/bs'
 import InputFiles from '../../modules/InputFiles';
+
+// const api = axios.create({
+//     baseURL: wlninja_graxsh_admin_vars.ajax_url
+// })
 
 export class Form extends Component {
     constructor(props) {
@@ -16,6 +21,7 @@ export class Form extends Component {
             message: '',
             files: [],
             privacy: false,
+            loading: false,
         }
 
         this.input = createRef(null)
@@ -49,9 +55,16 @@ export class Form extends Component {
     //     });
     // }
 
-    submitForm(e) {
+    async submitForm(e) {
+        if (this.state.loading) {
+            return
+        }
         e.preventDefault()
         e.stopPropagation()
+        this.setState({
+            loading: true
+        })
+
         console.log('You Try to handler Submit...');
 
         const formData = new FormData();
@@ -69,15 +82,32 @@ export class Form extends Component {
         formData.append("wlank_graxsh_pb_nonce", wlninja_graxsh_public_vars.wl_nonce);
         formData.append("route", 'api/v1/priv/post/save');
 
-        this.setState({
-            name: '',
-            email: '',
-            location: '',
-            title: '',
-            message: '',
-            files: [],
-            privacy: false,
-        });
+        try {
+            const req = await axios({
+                method: 'POST',
+                url: wlninja_graxsh_public_vars.ajax_url,
+                data: formData,
+                headers: { "Content-Type": "multipart/form-data" }, // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            }).then(res => {
+                const response = res.data;
+                console.log(response);
+                this.setState({
+                    name: '',
+                    email: '',
+                    location: '',
+                    title: '',
+                    message: '',
+                    files: [],
+                    privacy: false,
+                });
+
+                this.setState({
+                    loading: false
+                })
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     onClick(event) {
@@ -178,14 +208,17 @@ export class Form extends Component {
                         </form>
                     </ScrollContainer>
                     <div className='graxsh-public-submit' onClick={this.submitForm}>
-                        <BsArrowRight />
+                        <div className='arrow-loading-container'>
+                            <div className={this.state.loading ? 'arrow-loader' : ''}></div>
+                        </div>
+                        {/*  { this.state.loading ? <div className='arrow-loader'></div> : <BsArrowRight /> } */}
                     </div>
                 </div>
             </React.Fragment>
         )
     }
 
-        // componentDidMount() {
+    // componentDidMount() {
     //     if ("geolocation" in navigator) {
     //         console.log("geolocation Available");
 

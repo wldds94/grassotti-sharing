@@ -10,6 +10,7 @@
         &.indiana-scroll-container--hide-scrollbars {
             overflow: scroll;
         }
+
         // padding: 4rem 6rem 4rem 3rem; // padding: 5rem 6rem 5rem 3rem; // padding: 5rem 3rem 5rem;
 
         .form-container {
@@ -136,10 +137,10 @@
 /** ------ MEDIA QUERIES ------ **/
 // MEDIUM LARGE - 1024px
 @media screen and (max-width: $xl) {
-    .graxsh-form-container {    
+    .graxsh-form-container {
         .form-scroll-container {
             // padding: 0 6rem 0 3rem;
-    
+
             .form-container {
                 grid-template-columns: 40% 40% 35% 40% 45% 65% 50%;
                 // grid-template-columns: repeat(6, 50%); 
@@ -151,10 +152,10 @@
 /** ------ MEDIA QUERIES ------ **/
 // SMALL
 @media screen and (max-width: $sm) {
-    .graxsh-form-container {    
+    .graxsh-form-container {
         .form-scroll-container {
             // padding: 0 6rem 0 3rem;
-    
+
             .form-container {
                 display: flex;
                 width: max-content;
@@ -162,7 +163,7 @@
                 // grid-template-columns:repeat(6, minmax(auto, max-content));
                 // grid-template-columns: repeat(6, 50%); 
 
-                & > div {
+                &>div {
                     padding: 3.5rem 2.7rem 3.5rem;
 
                     &.form-files {
@@ -178,3 +179,160 @@
         }
     }
 }
+
+// Loader
+.arrow-loading-container {
+    div {
+        border: 3px solid transparent;
+        border-top-color: $whiteColor;
+        border-left-color: $whiteColor;
+        border-left-width: 0.01px;
+        /* border-left-color: #fff; */
+        /* border-bottom-color: #fff; */
+        // height: 30px;
+        width: 40px;
+        border-radius: 10%;
+        position: relative;
+        /* -webkit-transform: rotate(-45deg); */
+        /* transform: rotate(-45deg); */
+        margin: 30px auto;
+        transition: all 120ms ease-in;
+        transition: border-radius 0s;
+        transition: width 0s;
+        // transition: all 320ms ease-in;
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            background-color: $whiteColor;
+
+            height: 3px;
+            width: 14px;
+            transition: all 60ms ease-in;
+            transition: left 0s;
+            transition: top 0s;
+        }
+
+        &::before {
+            top: 1px;
+            left: 25px;
+            transform: rotate(135deg);
+        }
+
+        &::after {
+            top: -8px;
+            left: 25px;
+            transform: rotate(45deg);
+        }
+
+        &.arrow-loader {
+            border: 3px solid transparent;
+            border-top-color: $whiteColor;
+            border-left-color: $whiteColor;
+            // border-bottom-color: $whiteColor;
+            height: 30px;
+            width: 30px;
+            border-radius: 50%;
+            // position: relative;
+            transform: rotate(-45deg);
+            // margin: 30px auto;
+            // transition: all 80ms linear;
+            // transition: border-radius 0s;
+            // transition: width 0s;
+
+            animation: rotating 700ms ease-in-out infinite;
+
+            // &::before,
+            // &::after {
+            //     content: "";
+            //     position: absolute;
+            //     background-color: $whiteColor;
+
+            //     height: 3px;
+            //     width: 14px;
+            // }
+
+            &::before {
+                top: 6px;
+                left: 12px;
+                transform: rotate(150deg);
+            }
+
+            &::after {
+                top: -4px;
+                left: 17px;
+                transform: rotate(75deg);
+            }
+
+            @keyframes rotating {
+                from {
+                    transform: rotate(0deg);
+                }
+
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+        }
+    }
+}
+
+
+
+// div {
+//     border: 20px solid transparent;
+//     border-top-color: black;
+//     border-left-color: black;
+//     border-bottom-color: black;
+//     height: 100px;
+//     width: 100px;
+//     border-radius: 50%;
+//     position: relative;
+//     transform: rotate(-45deg);
+//     margin: 30px auto;
+// }
+
+// div:before {
+//     content: "";
+//     position: absolute;
+//     top: -20px;
+//     left: 80%;
+//     height: 0;
+//     width: 0;
+//     border-left: 30px solid black;
+//     border-top: 30px solid transparent;
+//     border-bottom: 30px solid transparent;
+//     transform: rotate(45deg);
+// }
+
+
+// /*BELOW IS FOR DEMO ONLY*/
+
+// div:hover {
+//     transform: rotate(315deg);
+//     transition: all 0.8s;
+// }
+
+// html {
+//     text-align: center;
+//     color: white;
+//     font-size: 30px;
+//     height: 100%;
+//     background: rgb(79, 79, 79);
+//     /* Old browsers */
+//     background: -moz-radial-gradient(center, ellipse cover, rgba(79, 79, 79, 1) 0%, rgba(34, 34, 34, 1) 100%);
+//     /* FF3.6+ */
+//     background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(79, 79, 79, 1)), color-stop(100%, rgba(34, 34, 34, 1)));
+//     /* Chrome,Safari4+ */
+//     background: -webkit-radial-gradient(center, ellipse cover, rgba(79, 79, 79, 1) 0%, rgba(34, 34, 34, 1) 100%);
+//     /* Chrome10+,Safari5.1+ */
+//     background: -o-radial-gradient(center, ellipse cover, rgba(79, 79, 79, 1) 0%, rgba(34, 34, 34, 1) 100%);
+//     /* Opera 12+ */
+//     background: -ms-radial-gradient(center, ellipse cover, rgba(79, 79, 79, 1) 0%, rgba(34, 34, 34, 1) 100%);
+//     /* IE10+ */
+//     background: radial-gradient(ellipse at center, rgba(79, 79, 79, 1) 0%, rgba(34, 34, 34, 1) 100%);
+//     /* W3C */
+//     filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#4f4f4f', endColorstr='#222222', GradientType=1);
+//     /* IE6-9 fallback on horizontal gradient */
+// }

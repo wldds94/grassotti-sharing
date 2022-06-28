@@ -19,7 +19,7 @@ class Post extends BaseController {
 			exit;
 		}
 
-        if(!isset($_POST['title']) || !isset($_POST['email']) || !isset($_POST['title']) || !isset($_POST['message'])) {
+        if(!isset($_POST['name']) || !isset($_POST['email']) || !isset($_POST['title']) || !isset($_POST['message'])) {
             $res_array['error'] = 'error - Could not verify POST values';
 			return json_encode($res_array);
 			exit;
@@ -396,14 +396,14 @@ class Post extends BaseController {
     public function savePostPublic()
     {
         $res_array = array();
-		if ( !isset( $_POST ) || empty($_POST) || !is_user_logged_in() || !wp_verify_nonce( $_POST['wlank_graxsh_nonce'], $this->admin_graxsh_nonce ) ) {
+		if ( !isset( $_POST ) || empty($_POST) || !wp_verify_nonce( $_POST['wlank_graxsh_pb_nonce'], $this->public_graxsh_nonce ) ) {
 			header( 'HTTP/1.1 400 Empty POST Values' );
 			$res_array['error'] = 'error - Could not verify POST values';
 			return json_encode($res_array);
 			exit;
 		}
 
-        if(!isset($_POST['title']) || !isset($_POST['email']) || !isset($_POST['title']) || !isset($_POST['message'])) {
+        if(!isset($_POST['name']) || !isset($_POST['email']) || !isset($_POST['title']) || !isset($_POST['message'])) {
             $res_array['error'] = 'error - Could not verify POST values';
 			return json_encode($res_array);
 			exit;
@@ -415,44 +415,22 @@ class Post extends BaseController {
 			exit;
 		}
 
-        $post_id = '';
-        if(isset($_POST['id'])) {
-            $post_id = sanitize_text_field( $_POST['id'] );
-		}
-
-        $date = sanitize_text_field( $_POST['date'] );
+        $date = date_format(new \DateTime("now"), 'Y-m-d'); // return array( 'date' => $date );
         $location = sanitize_text_field( $_POST['location'] );
         $name = sanitize_text_field( $_POST['name'] );
         $email = sanitize_text_field( $_POST['email'] );
         $title = sanitize_text_field( $_POST['title'] );
 		$message = htmlentities( wpautop($_POST['message']) );
-        $status = sanitize_text_field( $_POST['status'] ); // isset($_POST['status']) ? (absint( sanitize_text_field( $_POST['status'] ) ) === 1 ? 'publish' : 'draft') : 'draft';
+        $status = 'draft';
 
-        if ('' !== $post_id) {
-            $story_post = array(
-                'ID'           => $post_id,
-                'post_title'     => $title,
-                'post_content'   => $message,
-                'post_status'    => $status,
-                // 'guid'           => $wlpsa_dir_url . '/' . basename( $filename ),
-                'post_type'      => $this->cpt_slug,
-            );
-            $story_post_id = wp_update_post($story_post); // wp_insert_post( $story_post );
-
-            // Delete all childs post
-            $this->deleteChildsByPost($post_id);
-            $path = $this->upload_folder_path . '/' . $post_id;
-            $this->recursiveDelete($path);
-        } else {
-            $story_post = array(
-                'post_title'     => $title,
-                'post_content'   => $message,
-                'post_status'    => $status,
-                // 'guid'           => $wlpsa_dir_url . '/' . basename( $filename ),
-                'post_type'      => $this->cpt_slug,
-            );
-            $story_post_id = wp_insert_post( $story_post );
-        }
+        $story_post = array(
+            'post_title'     => $title,
+            'post_content'   => $message,
+            'post_status'    => $status,
+            // 'guid'           => $wlpsa_dir_url . '/' . basename( $filename ),
+            'post_type'      => $this->cpt_slug,
+        );
+        $story_post_id = wp_insert_post( $story_post );
         
         if (is_wp_error( $story_post_id)) {
             $res_array['error'] = 'error - Could not insert stories Post';
@@ -469,7 +447,6 @@ class Post extends BaseController {
         // Save metadata name and username
         update_post_meta($story_post_id, $this->cpt_slug_user_meta, $story_user_meta);
 
-        // return json_encode( $story_post_id );
         // Process File
         $hasfiles = count($_FILES['files']);
         if ($hasfiles) {
@@ -552,16 +529,8 @@ class Post extends BaseController {
                                 update_post_meta($story_post_attach_id, $this->cpt_attachments_meta_name, $story_post_attach_meta);
                             }
                         } else{
-                            // return $res_array['error'] = __("Error uploading the photo! Please try later.", "user-private-files");
-                            // exit;
                             continue;
                         }
-                        // return array(
-                        //     'control' => true,
-                        //     'message' => 'File Uploaded!!',
-                        // );
-
-                        // exit;
                     }
                 }
 
@@ -570,6 +539,11 @@ class Post extends BaseController {
                     'message' => 'File Uploaded!!',
                 );
             }
+        } else {
+            return array(
+                'control' => true,
+                'message' => 'I wasn\'t able to Upload File... Something went wrong',
+            );
         }
 
     }
