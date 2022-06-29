@@ -5,4 +5,8 @@
 
 .form-container-wrapper {
     position: relative;
+
+    input[type=date] {
+        width: auto;
+    }
 }

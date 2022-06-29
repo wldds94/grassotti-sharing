@@ -52,6 +52,12 @@ class BaseController
 	 */
 	public $settings_option_name;
 
+	/**
+	 * Mail
+	 */
+	public $from_address;
+	public $from_name;
+
 	public function __construct() {
 
 		$this->version = GRAXSH_VERSION;
@@ -91,6 +97,10 @@ class BaseController
 		// Shortcodes names
 		$this->graxsh_react_template_name = 'graxsh_react_template';
 		$this->graxsh_html_template_name = 'graxsh_html_template';
+
+		// Mail
+		$this->from_address = 'no-reply@' . $this->getHost();
+		$this->from_name = 'Website Mail Service <' . $this->site_url . '>';
     }
 
 	/**
@@ -115,5 +125,18 @@ class BaseController
 	public function isActivePublic()
 	{
 		return get_option($this->active_public_option_name, false) ?: false;
+	}
+
+	/**
+	 * Retrieve the host of site
+	 * @since    1.0.0
+	 * 
+	 * @return   string
+	 */
+	private function getHost()
+	{
+		// TEST
+		$protocols = array('http://', 'http://www.', 'www.', 'https://', 'https://www.');
+		return str_replace($protocols, '', $this->site_url);
 	}
 }
